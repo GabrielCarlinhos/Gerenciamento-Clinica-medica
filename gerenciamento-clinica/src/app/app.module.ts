@@ -5,6 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TelaLoginComponent } from './pages/tela-login/tela-login.component';
 import { IconComponent } from './components/icon/icon.component';
+import { UsuarioService } from './services/usuario.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,12 +17,17 @@ import { IconComponent } from './components/icon/icon.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   exports: [
     IconComponent,
   ],
-  providers: [],
+  providers: [
+    UsuarioService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

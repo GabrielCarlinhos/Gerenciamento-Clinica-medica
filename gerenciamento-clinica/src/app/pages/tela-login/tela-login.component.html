@@ -4,15 +4,14 @@
       <app-icon icon="Segclinic.PNG" [width]="431" [height]="128" id="titulo_login"></app-icon>
     </div>
     <div class="card-body">
-      <form id="form_login" method="post" action="../Controller/processa_login.php">
+      <form [formGroup]="form" (submit)="submit()">
         <div class="form-group mb-3">
           <label for="usuario_login" class="text-light">Usuário</label>
-          <input type="text" maxlength="16" placeholder="Nome de usuário" id="usuario_login" class="form-control"
-            name="usuario_login">
+          <input formControlName="no_usuario" type="text" maxlength="40" placeholder="Nome de usuário" class="form-control">
         </div>
         <div class="form-group mb-3">
           <label for="senha_login" class="text-light">Senha</label>
-          <input type="password" placeholder="Senha" id="senha_login" class="form-control" name="senha_login">
+          <input formControlName="ds_senha" type="password" placeholder="Senha" class="form-control">
         </div>
         <div class="form-group">
           <button type="submit" class="btn btn-rounded btn-success btn-air-primary">Acessar</button>

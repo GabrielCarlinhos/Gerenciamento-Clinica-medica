@@ -1,4 +1,4 @@
-import { Usuario } from './Usuario.model';
+import { Usuario } from './usuario.model';
 import { Especialidade } from './especialidade.model';
 
 export class Doutor {
