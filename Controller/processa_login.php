@@ -1,5 +1,11 @@
+
+
 <?php
-$login = $_POST['usuario_login'];
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST');
+header('Access-Control-Allow-Headers: Content-Type');
+
+$login = $_POST['ds'];
 $senha = $_POST['senha_login'];
 
 $conn = new MySQLi('LOCALHOST','root','','clinica');

@@ -7,12 +7,12 @@ import { Usuario } from '../models/usuario.model';
 })
 export class UsuarioService {
 
-    private path: string = '../../../../Controller/processa_login.php';
+    private path: string = 'http://localhost/gerenciamento-clinica-medica/controller';
 
     constructor(private http: HttpClient) { }
 
     login(model: Usuario) {
-        return this.http.post<Usuario>(`${this.path}`, model);
+        return this.http.post<Usuario>(`${this.path}/processa_login.php`, model);
     }
 
 }
