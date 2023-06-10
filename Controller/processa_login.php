@@ -1,37 +1,30 @@
+<?php
 
+?>
 
 <?php
-header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Origin: http://localhost:4200');
+header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: GET, POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
-$login = $_POST['ds'];
-$senha = $_POST['senha_login'];
+$requestData = json_decode(file_get_contents('php://input'), true);
+$login = $requestData['no_usuario'];
+$senha = $requestData['ds_senha'];
 
-$conn = new MySQLi('LOCALHOST','root','','clinica');
+$conn = new MySQLi('LOCALHOST', 'root', '', 'clinica');
 
 $query = "SELECT * FROM tb_usuarios WHERE
-login_usuario = '$login' and
-senha_usuario = '$senha'; ";
+no_usuario = '$login' and
+ds_senha = '$senha'; ";
 
 $result = $conn->query($query);
-if($result->num_rows >0){
-   session_start();
-   $_SESSION['logado'] = true;
-   while($rows = $result->fetch_assoc())
-   {
-       if ($rows['tipo_usuario'] == 'master'){
-           $_SESSION['tipo'] = 'master';
-       }else if($rows['tipo_usuario'] == 'admin'){
-           $_SESSION['tipo'] = 'admin';
-       }else if($rows['tipo_usuario'] == 'doutor'){
-           $_SESSION['tipo'] = 'doutor';
-           $_SESSION['id_doutor'] = $rows['id_usuario'];
-       }
-   }
-   echo "<script>window.location = '../View/tela_principal.php'</script>";
-}else{
+session_start();
+if ($result->num_rows > 0) {
+    $_SESSION['logado'] = true;
+    echo json_encode(['success' => true]);
+} else {
     $_SESSION['logado'] = false;
-    echo "<script>window.location = 'index.php?erro=true&login=$login'</script>";
+    echo json_encode(['success' => false, 'mensagem' => 'Nome de Usuário ou senha incorretos']);
 }
 ?>

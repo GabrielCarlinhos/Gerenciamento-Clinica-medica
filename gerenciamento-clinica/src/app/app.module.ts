@@ -8,12 +8,18 @@ import { IconComponent } from './components/icon/icon.component';
 import { UsuarioService } from './services/usuario.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { TelaPrincipalComponent } from './pages/tela-principal/tela-principal.component';
+import { AuthGuard } from './guards/auth.guard';
+import { HeaderComponent } from './components/header/header.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
     AppComponent,
     TelaLoginComponent,
-    IconComponent
+    IconComponent,
+    TelaPrincipalComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -21,12 +27,14 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgbModule,
   ],
   exports: [
     IconComponent,
   ],
   providers: [
     UsuarioService,
+    AuthGuard,
   ],
   bootstrap: [AppComponent],
 })

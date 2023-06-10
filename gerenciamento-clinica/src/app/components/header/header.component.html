@@ -1,0 +1,57 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-primary p-2">
+    <a class="navbar-brand" routerLink="/principal">
+        <app-icon icon="Segclinic.PNG" [width]="214" [height]="64"></app-icon>
+    </a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav-container navbar-scroll">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown" ngbDropdown>
+                    <a class="nav-link dropdown-toggle" ngbDropdownToggle>Cadastro</a>
+                    <ul class="dropdown-menu" ngbDropdownMenu>
+                        <li><a class="dropdown-item" href="javascript:void(0)">Usuários</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0)">Pacientes</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0)">Doutores</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0)">Especialidades</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="cadastro_especialidades.php">Especialidades (Alt+e)</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="cadastro_doutores.php">Doutores (Alt+d)</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="cadastro_pacientes.php">Pacientes (Alt+p)</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)">Agenda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)">Consultas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)">Pacientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)">Convênios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)">Doutores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="relatorio_financeiro.php">Financeiro</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="relatorio_operacional.php">Operacional</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)">Especialidades</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <a class="float-end" routerLink="/login">
+        <app-icon icon="sair.PNG"></app-icon>
+    </a>
+</nav>
