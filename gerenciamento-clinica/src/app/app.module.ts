@@ -11,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TelaPrincipalComponent } from './pages/tela-principal/tela-principal.component';
 import { AuthGuard } from './guards/auth.guard';
 import { HeaderComponent } from './components/header/header.component';
-import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -28,12 +28,9 @@ import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     HttpClientModule,
     NgbModule,
-    NgbDropdownModule,
   ],
   exports: [
     IconComponent,
-    NgbModule,
-    NgbDropdownModule,
   ],
   providers: [
     UsuarioService,
