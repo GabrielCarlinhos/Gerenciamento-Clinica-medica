@@ -1,0 +1,52 @@
+<app-header></app-header>
+<div class="container-fluid p-5 text-center">
+    <h2>Cadastro de Doutor</h2>
+    <form [formGroup]="form">
+        <div class="row">
+            <mat-form-field class="col-md-4">
+                <mat-label for="nu_crm">CRM</mat-label>
+                <input matInput maxlength="6" type="number" formControlName="nu_crm">
+            </mat-form-field>
+            <mat-form-field class="col-md-4">
+                <mat-label for="no_doutor">Nome Completo</mat-label>
+                <input matInput maxlength="45" type="text" formControlName="no_doutor">
+            </mat-form-field>
+            <mat-form-field class="col-md-4">
+                <mat-label for="nu_cpf">CPF</mat-label>
+                <input matInput maxlength="14" type="number" formControlName="nu_cpf">
+            </mat-form-field>
+            <mat-form-field class="col-md-4">
+                <mat-label for="nu_rg">RG</mat-label>
+                <input matInput maxlength="11" type="number" formControlName="nu_rg">
+            </mat-form-field>
+            <mat-form-field class="col-md-4">
+                <mat-label for="nu_telefone">Telefone</mat-label>
+                <input matInput maxlength="14" type="number" formControlName="nu_telefone">
+            </mat-form-field>
+            <mat-form-field class="col-md-4">
+                <mat-label for="nu_cep">CEP</mat-label>
+                <input matInput maxlength="9" type="number" formControlName="nu_cep">
+            </mat-form-field>
+            <mat-form-field class="col-md-4">
+                <mat-label for="nu_doutor">Número</mat-label>
+                <input matInput maxlength="5" type="number" formControlName="nu_doutor">
+            </mat-form-field>
+            <mat-form-field class="col-md-4">
+                <mat-label for="ds_rua">Rua</mat-label>
+                <input matInput type="text" formControlName="ds_rua">
+            </mat-form-field>
+            <mat-form-field class="col-md-4">
+                <mat-label for="ds_bairro">Bairro</mat-label>
+                <input matInput type="text" formControlName="ds_bairro">
+            </mat-form-field>
+            <mat-form-field class="col-md-4">
+                <mat-label for="co_estado">Estado</mat-label>
+                <mat-select formControlName="co_estado">
+                    <mat-option *ngFor="let estado of estados" [value]="estado.co_estado">
+                        {{estado.no_estado}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </form>
+</div>

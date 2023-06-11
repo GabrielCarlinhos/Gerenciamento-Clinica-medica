@@ -40,21 +40,7 @@
     <ul id="ul_especialidades" class = ul_principal><article>Especialidades</ul></article>
 </div>
 
-<div id="content_selecoes"> 
-<h2 id="titulo">Bem vindo ao sistema de gestão para clínicas</h2>
-<div id="images">
 
-    <a href="cadastro_usuarios.php"><div><img src="../imagens/Cadastro.png" class="imagens_tela_principal" width = "80px;" height = "80px"><figcaption>Cadastro</figcaption></div></a>
-    <a href="consultas.php"><div><img src="../imagens/Consultas.png" class="imagens_tela_principal" width = "80px;" height = "80px"><figcaption>Consultas</figcaption></div></a>
-    <a href="cadastro_convenios.php"><div><img src="../imagens/Convenio.png" class="imagens_tela_principal" width = "80px;" height = "80px"><figcaption>Convênios</figcaption></div></a>
-    <a href="cadastro_doutores.php"><div><img src="../imagens/Doutores.png" class="imagens_tela_principal" width = "80px;" height = "80px"><figcaption>Doutores</figcaption></div></a>
-    <a href="cadastro_especialidades.php"><div><img src="../imagens/Especialidade.png" class="imagens_tela_principal" width = "80px;" height = "80px"><figcaption>Especialidades</figcaption></div></a>
-    <a href="cadastro_pacientes.php"><div><img src="../imagens/Paciente.png" class="imagens_tela_principal" width = "80px;" height = "80px"><figcaption>Pacientes</figcaption></div></a>
-    <a href="agenda.php"><div><img src="../imagens/Agenda.png" class="imagens_tela_principal" width = "80px;" height = "80px"><figcaption>Agendamentos</figcaption></div></a>
-    <a href="relatorio_financeiro.php"><div><img src="../imagens/Relatório.png" class="imagens_tela_principal" width = "80px;" height = "80px"><figcaption>Relatórios</figcaption></div></a>
-    <a href="telaLogin.php"><div><img src="../imagens/sair2.png" class="imagens_tela_principal" width = "80px;" height = "80px"><figcaption>Sair</figcaption></div></a>
-</div>
-</div>
 </div>
 </div>
 </body>

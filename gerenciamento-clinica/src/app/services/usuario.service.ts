@@ -8,14 +8,11 @@ import { Constants } from '../shared/constants';
     providedIn: 'root'
 })
 export class UsuarioService {
-
-    private path: string = Constants.api;
-    private options = { withCredentials: true };;
-
+    
     constructor(private http: HttpClient) { }
 
     login(model: Usuario) {
-        return this.http.post<Sucesso<Usuario>>(`${this.path}/processa_login.php`, model, this.options);
+        return this.http.post<Sucesso<Usuario>>(`${Constants.api}/login.php`, model, Constants.options);
     }
 
 }

@@ -12,6 +12,11 @@ import { TelaPrincipalComponent } from './pages/tela-principal/tela-principal.co
 import { AuthGuard } from './guards/auth.guard';
 import { HeaderComponent } from './components/header/header.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DoutoresFormComponent } from './pages/doutores/doutores-form/doutores-form.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -19,7 +24,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     TelaLoginComponent,
     IconComponent,
     TelaPrincipalComponent,
-    HeaderComponent
+    HeaderComponent,
+    DoutoresFormComponent
   ],
   imports: [
     BrowserModule,
@@ -28,6 +34,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     HttpClientModule,
     NgbModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatSelectModule,
+    MatFormFieldModule,
   ],
   exports: [
     IconComponent,
