@@ -1,3 +1,19 @@
-mat-form-field{
-    padding:20px;
+mat-form-field {
+    padding: 20px;
+}
+
+@keyframes iconSizeIncrease {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.5);
+    }
+}
+
+.icon-suffix:hover {
+    animation-name: iconSizeIncrease;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
 }

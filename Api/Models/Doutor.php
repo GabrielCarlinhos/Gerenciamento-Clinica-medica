@@ -39,4 +39,21 @@ class Doutor
         $this->usuario = $data['usuario'] ?? null;
         $this->especialidade = $data['especialidade'] ?? null;
     }
+
+    public function create()
+    {
+        require 'Connection.php';
+        $conn = new Connection();
+        $conn->connect();
+        $query = "INSERT INTO tb_doutores(nu_crm,no_doutor,nu_cpf,nu_rg,nu_telefone,nu_cep,
+        nu_doutor,ds_logradouro,ds_bairro,ds_cidade,co_estado,co_especialidade)
+        VALUES($this->nu_crm,'$this->no_doutor','$this->nu_cpf','$this->nu_rg','$this->nu_telefone','$this->nu_cep',
+        $this->nu_doutor,'$this->ds_logradouro','$this->ds_bairro','$this->ds_cidade','$this->co_estado','$this->co_especialidade'
+        );";
+        if ($conn->query($query)) {
+            echo json_encode(['success' => true, 'mensagem' => 'Doutor Cadastrado!']);
+        } else {
+            echo json_encode(['success' => false, 'mensagem' => $conn->getError()]);
+        }
+    }
 }

@@ -17,6 +17,9 @@ import { DoutoresFormComponent } from './pages/doutores/doutores-form/doutores-f
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule} from '@angular/material/icon';
+import { EspecialidadeFormComponent } from './pages/especialidades/especialidade-form/especialidade-form.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     IconComponent,
     TelaPrincipalComponent,
     HeaderComponent,
-    DoutoresFormComponent
+    DoutoresFormComponent,
+    EspecialidadeFormComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +42,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatInputModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatButtonModule,
+    MatIconModule,
   ],
   exports: [
     IconComponent,
@@ -48,4 +54,4 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+  export class AppModule { }

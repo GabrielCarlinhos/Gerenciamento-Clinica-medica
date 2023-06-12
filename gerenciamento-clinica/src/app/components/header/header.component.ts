@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { trigger, state, style, animate, transition } from '@angular/animations';
+import { AuthService } from 'src/app/services/auth.service';
+import { first } from 'rxjs';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-header',
@@ -7,4 +10,15 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+
+  constructor(private authService: AuthService,
+    private router: Router) { }
+
+  logout() {
+    this.authService.logout().pipe(first()).subscribe((response) => {
+      this.router.navigate(['/login']);
+    })
+  }
+
 }
+

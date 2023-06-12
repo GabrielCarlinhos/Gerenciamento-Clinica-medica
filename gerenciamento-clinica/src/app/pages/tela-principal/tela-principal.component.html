@@ -1,6 +1,6 @@
 <app-header></app-header>
 <div class="container-fluid p-3 text-center">
-    <h5 class="text-center">Bem vindo ao sistema de gestão para clínicas</h5>
+    <h2 class="text-center">Bem vindo ao sistema de gestão para clínicas</h2>
     <div class="row my-3 gx-0">
         <div class="col-6 col-md-4 my-3">
             <a class="d-inline-flex flex-column" href="cadastro_usuarios.php">
@@ -27,7 +27,7 @@
             </a>
         </div>
         <div class="col-6 col-md-4 my-3">
-            <a class="d-inline-flex flex-column" href="cadastro_especialidades.php">
+            <a class="d-inline-flex flex-column" href="/especialidade/form">
                 <app-icon icon="Especialidade.PNG" class="imagens_tela_principal" [width]="80" [height]="80"></app-icon>
                 <span>Especialidades</span>
             </a>
@@ -51,7 +51,7 @@
             </a>
         </div>
         <div class="col-6 col-md-4 my-3">
-            <a class="d-inline-flex flex-column" href="telaLogin.php">
+            <a class="d-inline-flex flex-column" href="javascript:void(0)" (click)="logout()">
                 <app-icon icon="sair2.PNG" class="imagens_tela_principal" [width]="80" [height]="80"></app-icon>
                 <span>Sair</span>
             </a>

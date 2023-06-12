@@ -7,14 +7,16 @@ import { Constants } from "../shared/constants";
 })
 export class AuthService {
 
-
-
-    constructor(private http: HttpClient){
+    constructor(private http: HttpClient) {
 
     }
 
-    guard(){
-        return this.http.post<any>(`${Constants.api}/checkLogin.php`,{}, Constants.options);
+    guard() {
+        return this.http.post<any>(`${Constants.api}/checkLogin.php`, {}, Constants.options);
     }
 
-}
+    logout() {
+        return this.http.post<any>(`${Constants.api}/logout.php`, {}, Constants.options);
+    }
+
+}   
