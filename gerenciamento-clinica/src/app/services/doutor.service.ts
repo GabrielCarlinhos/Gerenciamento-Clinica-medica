@@ -5,12 +5,25 @@ import { Doutor } from '../models/doutor.model';
 import { Constants } from '../shared/constants';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class DoutorService {
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-    create(doutor: Doutor) {
-        return this.http.post<Sucesso<Doutor>>(`${Constants.api}/doutorCreate.php`, doutor);
-    }
+  create(doutor: Doutor) {
+    return this.http.post<Sucesso<Doutor>>(`${Constants.api}/doutorCreate.php`, doutor);
+  }
+
+  validateCpf(cpf: string) {
+    return this.http.get<any>(`${Constants.api}/doutorValidateCpf.php?cpf=${cpf}`);
+  }
+
+  validateCrm(crm: string) {
+    return this.http.get<any>(`${Constants.api}/doutorValidateCrm.php?crm=${crm}`);
+  }
+
+  validateRg(rg: string) {
+    return this.http.get<any>(`${Constants.api}/doutorValidateRg.php?rg=${rg}`);
+  }
+
 }

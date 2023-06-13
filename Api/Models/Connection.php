@@ -17,6 +17,10 @@ class Connection
         return $result;
     }
 
+    public function prepare($query){
+        return $this->conn->prepare($query);
+    }
+
     public function close()
     {
         $this->conn->close();

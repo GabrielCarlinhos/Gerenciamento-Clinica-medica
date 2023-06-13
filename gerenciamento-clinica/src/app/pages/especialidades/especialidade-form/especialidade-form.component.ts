@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
+
 import { EspecialidadeService } from 'src/app/services/especialidade.service';
 import { first } from 'rxjs';
 import Swal from 'sweetalert2';
 import { Constants } from 'src/app/shared/constants';
 import { Router } from '@angular/router';
+
+
 
 
 @Component({
@@ -14,7 +17,13 @@ import { Router } from '@angular/router';
 })
 export class EspecialidadeFormComponent implements OnInit {
 
+  public genericRequired: string = Constants.genericRequired;
+
   public form: FormGroup;
+
+  public currencyConfig = Constants.currencyMaskConfig;
+
+  @ViewChild('formDirective') private formDirective?: NgForm;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,8 +31,8 @@ export class EspecialidadeFormComponent implements OnInit {
     private router: Router,
   ) {
     this.form = formBuilder.group({
-      ds_especialidade: null,
-      vl_consulta: null,
+      ds_especialidade: [null, Validators.required],
+      vl_consulta: [null, Validators.required],
     })
   }
 
@@ -41,14 +50,17 @@ export class EspecialidadeFormComponent implements OnInit {
           showDenyButton: true,
           denyButtonText: 'Voltar para o início',
           showCancelButton: true,
-          cancelButtonText: 'Ir para Doutores',
+          cancelButtonText: 'Continuar',
           cancelButtonColor: Constants.info,
-          confirmButtonText: 'Continuar'
+          confirmButtonText: 'Ir para Doutores'
         }).then((response) => {
           if (response.isDenied) {
             this.router.navigate(['/principal'])
-          }else if(response.isDismissed){
+          } else if (response.isConfirmed) {
             this.router.navigate(['/doutor/form']);
+          } else if (response.isDismissed) {
+            this.form.reset();
+            this.formDirective?.resetForm();
           }
         })
       } else {

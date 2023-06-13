@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormGroupDirective, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { first } from 'rxjs';
-import { Doutor } from 'src/app/models/doutor.model';
 import { Especialidade } from 'src/app/models/especialidade.model';
 import { Estado } from 'src/app/models/estado.model';
+import { CepService } from 'src/app/services/cep.service';
 import { DoutorService } from 'src/app/services/doutor.service';
 import { EspecialidadeService } from 'src/app/services/especialidade.service';
 import { EstadoService } from 'src/app/services/estado.service';
 import { Constants } from 'src/app/shared/constants';
+import { cpfValidator } from 'src/app/validators/cpf.validator';
+
 import Swal from 'sweetalert2';
 
 
@@ -19,31 +21,70 @@ import Swal from 'sweetalert2';
 })
 export class DoutoresFormComponent implements OnInit {
 
+  public genericRequired: string = Constants.genericRequired;
+
   public form: FormGroup;
 
   public estados: Estado[] | undefined = [];
 
   public especialidades: Especialidade[] | undefined = [];
 
+  public validating: boolean = false;
+
+  @ViewChild('formDirective') private formDirective?: NgForm
+
   constructor(private formBuilder: FormBuilder,
     private estadoService: EstadoService,
     private doutorService: DoutorService,
     private especialidadeService: EspecialidadeService,
     private router: Router,
+    private cepService: CepService,
   ) {
     this.form = this.formBuilder.group({
-      'nu_crm': null,
-      'no_doutor': null,
-      'nu_cpf': null,
-      'nu_rg': null,
-      'nu_telefone': null,
-      'nu_cep': null,
+      'nu_crm': [null, [Validators.required]],
+      'no_doutor': [null, [Validators.required]],
+      'nu_cpf': [null, [Validators.required, cpfValidator.isValidCpf()]],
+      'nu_rg': [null, [Validators.required, Validators.minLength(5)]],
+      'nu_telefone': [null],
+      'nu_cep': [null, Validators.required],
       'nu_doutor': null,
-      'ds_logradouro': null,
-      'ds_bairro': null,
-      'co_estado': null,
-      'ds_cidade': null,
-      'co_especialidade': null,
+      'ds_logradouro': [null, Validators.required],
+      'ds_bairro': [null, Validators.required],
+      'co_estado': [null, Validators.required],
+      'ds_cidade': [null, Validators.required],
+      'co_especialidade': [null, Validators.required],
+    })
+    this.form.get('nu_cep')?.valueChanges.subscribe((value) => {
+      if (value && value.toString().length >= 8) {
+        this.cepService.fillCep(value, this.form);
+      }
+    })
+    this.form.get('nu_cpf')?.valueChanges.subscribe((value) => {
+      if (value && value.length == 11) {
+        this.validating = true;
+        this.doutorService.validateCpf(value).pipe(first()).subscribe((response) => {
+          if (!response.success) {
+            this.form.get('nu_cpf')?.setErrors({ 'duplicate': true });
+            this.validating = false
+          } else {
+            this.validating = false;
+          }
+        })
+      }
+    })
+
+    this.form.get('nu_rg')?.valueChanges.subscribe((value) => {
+      if (value && value.length >= 5) {
+        this.validating = true;
+        this.doutorService.validateRg(value).pipe(first()).subscribe((response) => {
+          if (!response.success) {
+            this.form.get('nu_rg')?.setErrors({ 'duplicate': true });
+            this.validating = false
+          } else {
+            this.validating = false;
+          }
+        })
+      }
     })
   }
 
@@ -64,11 +105,14 @@ export class DoutoresFormComponent implements OnInit {
     })
   }
 
-  navigateCep(){
-    window.open("https://buscacepinter.correios.com.br/app/endereco/index.php",'_blank');
+  navigateCep() {
+    window.open("https://buscacepinter.correios.com.br/app/endereco/index.php", '_blank');
   }
 
   submit() {
+    if (this.form.invalid) {
+      return;
+    }
     this.doutorService.create(this.form.value).pipe(first()).subscribe((response) => {
       if (response.success) {
         Swal.fire({
@@ -81,10 +125,23 @@ export class DoutoresFormComponent implements OnInit {
         }).then((result) => {
           if (result.isDenied) {
             this.router.navigate(['/principal']);
-          }else if(result.isConfirmed){
+          } else if (result.isConfirmed) {
             this.form.reset();
+            this.formDirective?.resetForm();
           }
         });
+      }
+    })
+  }
+
+  validateCrm() {
+    this.validating = true;
+    this.doutorService.validateCrm(this.form.get('nu_crm')?.value).pipe(first()).subscribe((response) => {
+      if (!response.success) {
+        this.form.get('nu_crm')?.setErrors({ 'duplicate': true });
+        this.validating = false
+      } else {
+        this.validating = false;
       }
     })
   }

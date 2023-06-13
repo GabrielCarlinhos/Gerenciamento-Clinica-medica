@@ -1,77 +1,97 @@
 <app-header></app-header>
 <div class="container-fluid p-5 text-center">
-    <h2>Cadastro de Doutor</h2>
-    <form [formGroup]="form" (submit)="submit()">
-        <div class="row">
-            <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
-                <mat-label for="nu_crm">CRM</mat-label>
-                <input matInput [max]="999999" [min]="0" type="number" formControlName="nu_crm">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
-                <mat-label for="no_doutor">Nome Completo</mat-label>
-                <input matInput maxlength="45" type="text" formControlName="no_doutor">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
-                <mat-label for="co_especialidade">Especialidade</mat-label>
-                <mat-select formControlName="co_especialidade">
-                    <mat-option *ngFor="let especialidade of especialidades" [value]="especialidade.co_especialidade">
-                        {{especialidade.ds_especialidade}}
-                    </mat-option>
-                </mat-select>
-                <mat-icon matSuffix role="button" class="icon-suffix" color="primary" routerLink="/especialidade/form">add</mat-icon>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
-                <mat-label for="nu_cpf">CPF</mat-label>
-                <input matInput maxlength="14" type="number" formControlName="nu_cpf">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
-                <mat-label for="nu_rg">RG</mat-label>
-                <input matInput maxlength="11" type="number" formControlName="nu_rg">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
-                <mat-label for="nu_telefone">Telefone</mat-label>
-                <input matInput maxlength="14" type="number" formControlName="nu_telefone">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
-                <mat-label for="nu_cep">CEP</mat-label>
-                <input matInput maxlength="9" type="number" formControlName="nu_cep">
-                <mat-icon matSuffix color="info" class="icon-suffix" role="button" (click)="navigateCep()">search</mat-icon>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
-                <mat-label for="nu_doutor">Número</mat-label>
-                <input matInput maxlength="5" type="number" formControlName="nu_doutor">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
-                <mat-label for="ds_logradouro">Rua</mat-label>
-                <input matInput type="text" formControlName="ds_logradouro">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
-                <mat-label for="ds_bairro">Bairro</mat-label>
-                <input matInput type="text" formControlName="ds_bairro">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
-                <mat-label for="co_estado">Estado</mat-label>
-                <mat-select formControlName="co_estado">
-                    <mat-option *ngFor="let estado of estados" [value]="estado.co_estado">
-                        {{estado.no_estado}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
-                <mat-label for="ds_cidade">Cidade</mat-label>
-                <input matInput type="text" formControlName="ds_cidade">
-            </mat-form-field>
-
-        </div>
-        <div class="d-flex justify-content-end me-5">
-            <button type="submit" mat-fab extended color="primary" class="mx-2">
-                <mat-icon>save</mat-icon>
-                Adicionar
-            </button>
-            <button type="button" routerLink="/principal" mat-fab extended color="warn" class="mx-2">
-                <mat-icon>close</mat-icon>
-                Cancelar
-            </button>
-        </div>
-    </form>
+  <h2>Cadastro de Doutor</h2>
+  <form [formGroup]="form" (submit)="submit()" #formDirective="ngForm">
+    <div class="row">
+      <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
+        <mat-label for="nu_crm">CRM</mat-label>
+        <input matInput type="text" mask="000009" formControlName="nu_crm" (blur)="validateCrm()">
+        <mat-error *ngIf="form.get('nu_crm')?.hasError('required')">{{genericRequired}}</mat-error>
+        <mat-error *ngIf="form.get('nu_crm')?.hasError('mask')">CRM Inválido</mat-error>
+        <mat-error *ngIf="form.get('nu_crm')?.hasError('duplicate')">CRM já Cadastrado</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
+        <mat-label for="no_doutor">Nome Completo</mat-label>
+        <input matInput maxlength="45" type="text" formControlName="no_doutor">
+        <mat-error *ngIf="form.get('no_doutor')?.hasError('required')">{{genericRequired}}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
+        <mat-label for="co_especialidade">Especialidade</mat-label>
+        <mat-select formControlName="co_especialidade">
+          <mat-option *ngFor="let especialidade of especialidades" [value]="especialidade.co_especialidade">
+            {{especialidade.ds_especialidade}}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix role="button" class="icon-suffix" color="primary" routerLink="/especialidade/form">add
+        </mat-icon>
+        <mat-error *ngIf="form.get('co_especialidade')?.hasError('required')">{{genericRequired}}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
+        <mat-label for="nu_cpf">CPF</mat-label>
+        <input matInput formControlName="nu_cpf" mask="000.000.000-00">
+        <mat-error *ngIf="form.get('nu_cpf')?.hasError('required')">{{genericRequired}}</mat-error>
+        <mat-error *ngIf="form.get('nu_cpf')?.hasError('cpfInvalid') || form.get('nu_cpf')?.hasError('mask')">Cpf
+          Inválido</mat-error>
+        <mat-error *ngIf="form.get('nu_cpf')?.hasError('duplicate')">Cpf já Cadastrado</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
+        <mat-label for="nu_rg">RG</mat-label>
+        <input matInput maxlength="11" type="text" formControlName="nu_rg" mask="00000999999">
+        <mat-error *ngIf="form.get('nu_rg')?.hasError('required')">{{genericRequired}}</mat-error>
+        <mat-error *ngIf="form.get('nu_rg')?.hasError('duplicate')">Rg já Cadastrado</mat-error>
+        <mat-error *ngIf="form.get('nu_rg')?.hasError('minLength')">RG Inválido</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
+        <mat-label for="nu_telefone">Telefone</mat-label>
+        <input matInput maxlength="14" type="number" formControlName="nu_telefone">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
+        <mat-label for="nu_cep">CEP</mat-label>
+        <input matInput type="text" mask="99999-999" formControlName="nu_cep">
+        <mat-icon matSuffix color="info" class="icon-suffix" role="button" (click)="navigateCep()">search</mat-icon>
+        <mat-error *ngIf="form.get('nu_cep')?.hasError('required')">{{genericRequired}}</mat-error>
+        <mat-error *ngIf="form.get('nu_cep')?.hasError('customError') || form.get('nu_cep')?.hasError('mask')">CEP Inválido</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
+        <mat-label for="nu_doutor">Número</mat-label>
+        <input matInput maxlength="5" type="number" formControlName="nu_doutor">
+        <mat-error *ngIf="form.get('nu_doutor')?.hasError('required')">{{genericRequired}}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
+        <mat-label for="ds_logradouro">Rua</mat-label>
+        <input matInput type="text" formControlName="ds_logradouro">
+        <mat-error *ngIf="form.get('ds_logradouro')?.hasError('required')">{{genericRequired}}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
+        <mat-label for="ds_bairro">Bairro</mat-label>
+        <input matInput type="text" formControlName="ds_bairro">
+        <mat-error *ngIf="form.get('ds_bairro')?.hasError('required')">{{genericRequired}}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
+        <mat-label for="co_estado">Estado</mat-label>
+        <mat-select formControlName="co_estado">
+          <mat-option *ngFor="let estado of estados" [value]="estado.co_estado">
+            {{estado.no_estado}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('co_estado')?.hasError('required')">{{genericRequired}}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
+        <mat-label for="ds_cidade">Cidade</mat-label>
+        <input matInput type="text" formControlName="ds_cidade">
+        <mat-error *ngIf="form.get('ds_cidade')?.hasError('required')">{{genericRequired}}</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="d-flex justify-content-end me-5">
+      <button type="submit" mat-fab extended color="primary" class="mx-2" #submitButton
+        [disabled]="validating || form.invalid">
+        <mat-icon>save</mat-icon>
+        Adicionar
+      </button>
+      <button type="button" routerLink="/principal" mat-fab extended color="warn" class="mx-2">
+        <mat-icon>close</mat-icon>
+        Cancelar
+      </button>
+    </div>
+  </form>
 </div>

@@ -22,5 +22,5 @@ export class Paciente {
     id_convenio?: number;
     convenio?: Convenio;
     acompanhantes?: Acompanhante[];
-    prontuarios?: Prontuario[];
+    prontuario?: Prontuario;
 }

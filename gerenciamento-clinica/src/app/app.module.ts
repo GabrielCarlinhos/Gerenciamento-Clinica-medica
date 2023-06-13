@@ -18,8 +18,17 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { EspecialidadeFormComponent } from './pages/especialidades/especialidade-form/especialidade-form.component';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { IConfig, NgxMaskModule } from 'ngx-mask';
+import { PacienteFormComponent } from './pages/pacientes/paciente-form/paciente-form.component';
+
+export const options: Partial<null | IConfig> | (() => Partial<IConfig>) = null;
+
 
 @NgModule({
   declarations: [
@@ -29,7 +38,8 @@ import { EspecialidadeFormComponent } from './pages/especialidades/especialidade
     TelaPrincipalComponent,
     HeaderComponent,
     DoutoresFormComponent,
-    EspecialidadeFormComponent
+    EspecialidadeFormComponent,
+    PacienteFormComponent
   ],
   imports: [
     BrowserModule,
@@ -44,6 +54,10 @@ import { EspecialidadeFormComponent } from './pages/especialidades/especialidade
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
+    CurrencyMaskModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    NgxMaskModule.forRoot()
   ],
   exports: [
     IconComponent,
@@ -51,7 +65,8 @@ import { EspecialidadeFormComponent } from './pages/especialidades/especialidade
   providers: [
     UsuarioService,
     AuthGuard,
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
   ],
   bootstrap: [AppComponent],
 })
-  export class AppModule { }
+export class AppModule { }

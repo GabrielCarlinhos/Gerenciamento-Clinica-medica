@@ -18,16 +18,26 @@ class Especialidade
 
     public function create()
     {
+        if (empty($this->ds_especialidade) || empty($this->vl_consulta)) {
+            echo json_encode(['success' => false, 'mensagem' => 'Campos obrigatórios não preenchidos.']);
+            return;
+        }
+
         require 'Connection.php';
         $conn = new Connection();
         $conn->connect();
-        $query = "INSERT INTO tb_especialidades(ds_especialidade,vl_consulta)
-        VALUES('$this->ds_especialidade','$this->vl_consulta');";
-        if ($conn->query($query)) {
+        $query = "INSERT INTO tb_especialidades(ds_especialidade, vl_consulta)
+    VALUES(?, ?)";
+
+        $exec = $conn->prepare($query);
+        $exec->bind_param("ss", $this->ds_especialidade, $this->vl_consulta);
+
+        if ($exec->execute()) {
             echo json_encode(['success' => true, 'mensagem' => 'Especialidade Cadastrada!']);
         } else {
             echo json_encode(['success' => false, 'mensagem' => $conn->getError()]);
         }
+
         $conn->close();
     }
 

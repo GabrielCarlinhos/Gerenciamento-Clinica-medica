@@ -16,7 +16,7 @@ class Estado
         require 'Connection.php';
         $conn = new Connection();
         $conn->connect();
-        $query = 'SELECT * FROM estados';
+        $query = 'SELECT * FROM tb_estados';
         $result = $conn->query($query);
         $estados = [];
         while ($data = $result->fetch_assoc()) {

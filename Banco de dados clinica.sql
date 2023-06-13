@@ -1,20 +1,23 @@
-create database clinica;
+
+select * from tb_estados;
+
+create database if not exists clinica;
 use clinica;
 
-create table tb_usuarios(
-no_usuario int not null auto_increment,
+create table if not exists tb_usuarios(
+id_usuario int not null auto_increment,
+no_usuario varchar(24) not null,
 ds_senha varchar(24) not null,
-no_login varchar(16) not null,
 ds_situacao enum ("ativo", "inativo") not null,
 ds_tipo_usuario enum("admin","doutor","master") not null,
 ds_email varchar(100) not null,
 constraint pk_usuario primary key (id_usuario)
 )CHARACTER SET latin1 COLLATE latin1_bin;
 
-insert into tb_usuarios(senha_usuario,login_usuario,situacao_usuario,tipo_usuario,email_usuario)
+insert into tb_usuarios(ds_senha,no_usuario,ds_situacao,ds_tipo_usuario,ds_email)
 values('a','A','ativo','master','a@gmail.com');
 
-create table tb_especialidades(
+create table if not exists tb_especialidades(
 co_especialidade int not null auto_increment,
 ds_especialidade varchar(100) not null,
 vl_consulta dec(10,2) not null,
@@ -23,7 +26,7 @@ constraint pk_especialidade primary key (co_especialidade)
 
 
 
-create table tb_doutores(
+create table if not exists tb_doutores(
 nu_crm int not null,
 no_doutor varchar (45) not null,
 nu_cpf varchar(14) not null, 
@@ -43,14 +46,14 @@ constraint fk_id_usuario foreign key (id_usuario) references tb_usuarios (id_usu
 constraint fk_cd_especialidade foreign key (co_especialidade) references tb_especialidades (co_especialidade)
 );
 
-create table tb_convenios(
+create table if not exists tb_convenios(
 id_convenio int not null auto_increment,
 no_convenio varchar(45) not null,
 nu_convenio int not null,
 constraint pk_convenio primary key(id_convenio)
 );
 
-create table tb_pacientes(
+create table if not exists tb_pacientes(
 id_paciente int not null auto_increment,
 no_paciente varchar(45) not null,
 nu_cpf varchar (15) not null,
@@ -72,7 +75,7 @@ constraint pk_paciente primary key (id_paciente),
 constraint fk_id_convenio foreign key(id_convenio) references tb_convenios(id_convenio)
 );
 
-create table tb_acompanhantes(
+create table if not exists tb_acompanhantes(
 id_acompanhante int not null auto_increment,
 no_acompanhante varchar(45) not null,
 nu_cpf varchar (15) not null,
@@ -84,7 +87,7 @@ constraint pk_acompanhante primary key (id_acompanhante),
 constraint fk_id_paciente foreign key(id_paciente) references tb_pacientes (id_paciente)
 );
 
-create table tb_agendamentos(
+create table if not exists tb_agendamentos(
 co_agendamento int not null auto_increment,
 dt_agendamento DateTime not null,
 id_paciente int not null,
@@ -96,23 +99,21 @@ constraint fk_id_paciente_agendamento foreign key(id_paciente) references tb_pac
 constraint fk_crm_doutor foreign key(nu_crm_doutor) references tb_doutores (nu_crm)
 );
 
-create table tb_consultas(
+create table if not exists tb_consultas(
 co_consulta int not null auto_increment,
 dt_consulta dateTime not null,
 vl_consulta float not null,
 ds_convenio enum("social", "particular") not null,
 id_paciente int not null,
 nu_crm_doutor int not null,
-constraint pk_consulta primary key (codigo_consulta),
+constraint pk_consulta primary key (co_consulta),
 constraint fk_id_paciente_consulta foreign key(id_paciente) references tb_pacientes (id_paciente),
-constraint fk_crm_doutor_consulta foreign key(nu_crm_doutor) references tb_doutores (crm_doutor)
+constraint fk_crm_doutor_consulta foreign key(nu_crm_doutor) references tb_doutores (nu_crm)
 );
 
 
 
-
-
-create table tb_prontuarios(
+create table if not exists tb_prontuarios(
 id_prontuario int not null auto_increment,
 nu_peso float,
 nu_altura float,
@@ -125,10 +126,10 @@ id_paciente int not null,
 nu_crm_doutor int not null,
 constraint pk_prontuario primary key (id_prontuario),
 constraint fk_id_paciente_prontuario foreign key(id_paciente) references tb_pacientes (id_paciente),
-constraint fk_crm_doutor_prontuario foreign key(nu_crm_doutor) references tb_doutores (crm_doutor)
+constraint fk_crm_doutor_prontuario foreign key(nu_crm_doutor) references tb_doutores (nu_crm)
 );
 
-CREATE TABLE IF NOT EXISTS `estados` (
+create table if not exists tb_estados (
   `id_estado` int(11) NOT NULL,
   `no_estado` varchar(75) DEFAULT NULL,
   `co_estado` varchar(2) DEFAULT NULL,

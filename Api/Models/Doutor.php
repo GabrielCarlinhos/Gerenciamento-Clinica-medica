@@ -45,15 +45,43 @@ class Doutor
         require 'Connection.php';
         $conn = new Connection();
         $conn->connect();
-        $query = "INSERT INTO tb_doutores(nu_crm,no_doutor,nu_cpf,nu_rg,nu_telefone,nu_cep,
-        nu_doutor,ds_logradouro,ds_bairro,ds_cidade,co_estado,co_especialidade)
-        VALUES($this->nu_crm,'$this->no_doutor','$this->nu_cpf','$this->nu_rg','$this->nu_telefone','$this->nu_cep',
-        $this->nu_doutor,'$this->ds_logradouro','$this->ds_bairro','$this->ds_cidade','$this->co_estado','$this->co_especialidade'
-        );";
-        if ($conn->query($query)) {
+        $query = "INSERT INTO tb_doutores(nu_crm, no_doutor, nu_cpf, nu_rg, nu_telefone, nu_cep,
+    nu_doutor, ds_logradouro, ds_bairro, ds_cidade, co_estado, co_especialidade)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $exec = $conn->prepare($query);
+        $exec->bind_param(
+            "ssssssssssss",
+            $this->nu_crm,
+            $this->no_doutor,
+            $this->nu_cpf,
+            $this->nu_rg,
+            $this->nu_telefone,
+            $this->nu_cep,
+            $this->nu_doutor,
+            $this->ds_logradouro,
+            $this->ds_bairro,
+            $this->ds_cidade,
+            $this->co_estado,
+            $this->co_especialidade
+        );
+
+        if ($exec->execute()) {
             echo json_encode(['success' => true, 'mensagem' => 'Doutor Cadastrado!']);
         } else {
             echo json_encode(['success' => false, 'mensagem' => $conn->getError()]);
         }
+
+        $conn->close();
+    }
+
+    public static function validateDuplicate($key, $value)
+    {
+        require 'Connection.php';
+        $conn = new Connection();
+        $conn->connect();
+        $query = "SELECT * FROM tb_doutores where $key = '$value';";
+        echo json_encode(['success' => $conn->query($query)->num_rows <= 0]);
+        $conn->close();
     }
 }

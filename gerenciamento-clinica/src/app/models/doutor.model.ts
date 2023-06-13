@@ -2,7 +2,7 @@ import { Usuario } from './usuario.model';
 import { Especialidade } from './especialidade.model';
 
 export class Doutor {
-    nu_crm?: number;
+    nu_crm?: string;
     no_doutor?: string;
     nu_cpf?: string;
     nu_rg?: string;
