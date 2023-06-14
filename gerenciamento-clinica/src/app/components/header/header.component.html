@@ -1,45 +1,46 @@
+
 <nav class="w-100 navbar navbar-expand-lg navbar-light bg-primary p-2 d-flex align-items-end">
-    <a class="navbar-brand" routerLink="/principal">
-        <app-icon icon="Segclinic.PNG" [width]="214" [height]="64"></app-icon>
-    </a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <div class="navbar-nav-container navbar-scroll">
-            <ul class="navbar-nav mr-auto ">
-                <li role="button" class="nav-item dropdown mx-5" ngbDropdown>
-                    <a class="nav-link dropdown-toggle" ngbDropdownToggle>Cadastro</a>
-                    <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
-                        <li><a class="dropdown-item" routerLink="/doutor/form">Doutores</a></li>
-                        <li><a class="dropdown-item" routerLink="/especialidade/form">Especialidades</a></li>
-                        <li><a class="dropdown-item" routerLink="/paciente/form">Pacientes</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0)">Usuários</a></li>
-                    </ul>
-                </li>
-                <li role="button" class="nav-item dropdown mx-5" ngbDropdown>
-                    <a class="nav-link dropdown-toggle" ngbDropdownToggle>Listagem</a>
-                    <ul class="dropdown-menu" ngbDropdownMenu>
-                        <li><a class="dropdown-item" href="javascript:void(0)">Convênios</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0)">Doutores</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0)">Especialidades</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0)">Pacientes</a></li>
-                    </ul>
-                </li>
-                <li role="button" class="nav-item dropdown mx-5" ngbDropdown>
-                    <a class="nav-link dropdown-toggle" ngbDropdownToggle>Relatório</a>
-                    <ul class="dropdown-menu" ngbDropdownMenu>
-                        <li><a class="dropdown-item" href="javascript:void(0)">Operacional</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0)">Financeiro</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item mx-5">
-                    <a class="nav-link" href="javascript:void(0)">Agenda</a>
-                </li>
-                <li class="nav-item mx-5">
-                    <a class="nav-link" href="javascript:void(0)">Consultas</a>
-                </li>
-            </ul>
-        </div>
+  <a class="navbar-brand" routerLink="/principal">
+    <app-icon icon="Segclinic.PNG" [width]="214" [height]="64"></app-icon>
+  </a>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="navbar-nav-container navbar-scroll">
+      <ul class="navbar-nav mr-auto ">
+        <li role="button" class="nav-item dropdown mx-5" ngbDropdown>
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle>Cadastro</a>
+          <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+            <li><a class="dropdown-item" routerLink="/convenio/form">Convênios</a></li>
+            <li><a class="dropdown-item" routerLink="/doutor/form">Doutores</a></li>
+            <li><a class="dropdown-item" routerLink="/paciente/form">Pacientes</a></li>
+            <li><a class="dropdown-item" routerLink="/usuario/form">Usuários</a></li>
+          </ul>
+        </li>
+        <li role="button" class="nav-item dropdown mx-5" ngbDropdown>
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle>Listagem</a>
+          <ul class="dropdown-menu" ngbDropdownMenu>
+            <li><a class="dropdown-item" routerLink="/convenio">Convênios</a></li>
+            <li><a class="dropdown-item" routerLink="/doutor">Doutores</a></li>
+            <li><a class="dropdown-item" routerLink="/especialidade">Especialidades</a></li>
+            <li><a class="dropdown-item" routerLink="/paciente">Pacientes</a></li>
+          </ul>
+        </li>
+        <li role="button" class="nav-item dropdown mx-5" ngbDropdown>
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle>Relatório</a>
+          <ul class="dropdown-menu" ngbDropdownMenu>
+            <li><a class="dropdown-item" href="javascript:void(0)">Operacional</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0)">Financeiro</a></li>
+          </ul>
+        </li>
+        <li class="nav-item mx-5">
+          <a class="nav-link" href="javascript:void(0)">Agenda</a>
+        </li>
+        <li class="nav-item mx-5">
+          <a class="nav-link" href="javascript:void(0)">Consultas</a>
+        </li>
+      </ul>
     </div>
-    <a class="float-end" href="javascript:void(0)" (click)="logout()">
-        <app-icon icon="sair.PNG"></app-icon>
-    </a>
+  </div>
+  <a class="float-end" href="javascript:void(0)" (click)="logout()">
+    <app-icon icon="sair.PNG"></app-icon>
+  </a>
 </nav>

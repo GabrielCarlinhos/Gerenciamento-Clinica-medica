@@ -1,0 +1,38 @@
+<app-header></app-header>
+<div class="container-fluid p-5">
+  <h2>Pacientes</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <td>#</td>
+          <td>Paciente</td>
+          <td>Telefone</td>
+          <td>Genêro</td>
+          <td>Endereço</td>
+          <td>Data de Nascimento</td>
+          <td class="text-info text-center">Editar</td>
+          <td class="text-danger text-center">Remover</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let paciente of pacientes;let i = index">
+          <td>{{i+1}}</td>
+          <td>{{paciente.no_paciente}}</td>
+          <td>{{paciente.nu_telefone}}</td>
+          <td>{{paciente.ds_genero | titlecase}}</td>
+          <td>
+            {{paciente.ds_logradouro + ', ' + (paciente.nu_paciente ? paciente.nu_paciente + '' : '') + ', ' + paciente.ds_cidade + ' - ' + paciente.co_estado}}
+          </td>
+          <td>{{paciente.dt_nascimento | date:'dd/MM/yyyy'}}</td>
+          <td class="text-info text-center">
+            <mat-icon role="button" routerLink="/paciente/form/{{paciente.id_paciente}}">edit</mat-icon>
+          </td>
+          <td class="text-danger text-center">
+            <mat-icon role="button" (click)="delete(paciente.id_paciente)">delete</mat-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

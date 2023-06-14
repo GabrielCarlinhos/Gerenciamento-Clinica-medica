@@ -21,11 +21,22 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatRadioModule } from '@angular/material/radio';
+import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { EspecialidadeFormComponent } from './pages/especialidades/especialidade-form/especialidade-form.component';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { IConfig, NgxMaskModule } from 'ngx-mask';
 import { PacienteFormComponent } from './pages/pacientes/paciente-form/paciente-form.component';
+import { ConvenioFormComponent } from './pages/convenios/convenio-form/convenio-form.component';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { AcompanhanteFormComponent } from './pages/pacientes/acompanhantes/acompanhante-form/acompanhante-form.component';
+import { UsuarioFormComponent } from './pages/usuarios/usuario-form/usuario-form.component';
+import { EspecialidadesPrincipalComponent } from './pages/especialidades/especialidades-principal/especialidades-principal.component';
+import { PacientesPrincipalComponent } from './pages/pacientes/pacientes-principal/pacientes-principal.component';
+import { DoutoresPrincipalComponent } from './pages/doutores/doutores-principal/doutores-principal.component';
+import { ConveniosPrincipalComponent } from './pages/convenios/convenios-principal/convenios-principal.component';
+import { ToastrModule } from 'ngx-toastr';
 
 export const options: Partial<null | IConfig> | (() => Partial<IConfig>) = null;
 
@@ -39,7 +50,14 @@ export const options: Partial<null | IConfig> | (() => Partial<IConfig>) = null;
     HeaderComponent,
     DoutoresFormComponent,
     EspecialidadeFormComponent,
-    PacienteFormComponent
+    PacienteFormComponent,
+    ConvenioFormComponent,
+    AcompanhanteFormComponent,
+    UsuarioFormComponent,
+    EspecialidadesPrincipalComponent,
+    PacientesPrincipalComponent,
+    DoutoresPrincipalComponent,
+    ConveniosPrincipalComponent
   ],
   imports: [
     BrowserModule,
@@ -57,12 +75,16 @@ export const options: Partial<null | IConfig> | (() => Partial<IConfig>) = null;
     CurrencyMaskModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    NgxMaskModule.forRoot()
+    MatRadioModule,
+    NgbModalModule,
+    NgxMaskModule.forRoot(),
+    ToastrModule.forRoot(),
   ],
   exports: [
     IconComponent,
   ],
   providers: [
+    { provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'accent' } },
     UsuarioService,
     AuthGuard,
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }

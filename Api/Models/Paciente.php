@@ -1,7 +1,7 @@
 <?php
 header('Access-Control-Allow-Origin: http://localhost:4200');
 header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Methods: GET, POST');
+header('Access-Control-Allow-Methods: GET, POST, PUT');
 header('Access-Control-Allow-Headers: Content-Type');
 
 class Paciente
@@ -24,7 +24,7 @@ class Paciente
     public $nu_rg;
     public $id_convenio;
     public $convenio;
-    public $acompanhantes;
+    public $acompanhante;
     public $prontuario;
 
     public function __construct($data = [])
@@ -47,7 +47,7 @@ class Paciente
         $this->nu_rg = $data['nu_rg'] ?? null;
         $this->id_convenio = $data['id_convenio'] ?? null;
         $this->convenio = $data['convenio'] ?? null;
-        $this->acompanhantes = $data['acompanhantes'] ?? null;
+        $this->acompanhante = $data['acompanhante'] ?? null;
         $this->prontuario = $data['prontuario'] ?? null;
     }
 
@@ -57,12 +57,13 @@ class Paciente
         $conn = new Connection();
         $conn->connect();
 
-        $query = "INSERT INTO tb_pacientes (no_paciente, nu_cpf, nu_rg, dt_nascimento, ds_genero, nu_telefone, nu_cep, nu_paciente, ds_logradouro, ds_bairro, ds_cidade, co_estado, id_convenio)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        $exec = $conn->prepare($query);
-        $exec->bind_param(
-            "sssssssssssss",
+        $query = "INSERT INTO tb_pacientes (no_paciente, nu_cpf, nu_rg, dt_nascimento, ds_genero, nu_telefone, nu_cep, nu_paciente, ds_logradouro, ds_bairro, ds_cidade, co_estado, no_mae, id_convenio)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param(
+            "ssssssssssssss",
             $this->no_paciente,
             $this->nu_cpf,
             $this->nu_rg,
@@ -75,15 +76,115 @@ class Paciente
             $this->ds_bairro,
             $this->ds_cidade,
             $this->co_estado,
+            $this->no_mae,
             $this->id_convenio
         );
 
-        if ($exec->execute()) {
+        if ($stmt->execute()) {
+            if ($this->acompanhante != null) {
+                require 'Acompanhante.php';
+                $acompanhante = new Acompanhante($this->acompanhante);
+                $acompanhante->id_paciente = $conn->getInsertId();
+                $acompanhante->create();
+            }
             echo json_encode(['success' => true, 'mensagem' => 'Paciente Cadastrado!']);
         } else {
             echo json_encode(['success' => false, 'mensagem' => $conn->getError()]);
         }
 
+        $conn->close();
+    }
+
+    public static function validateDuplicate($key, $value)
+    {
+        require 'Connection.php';
+        $conn = new Connection();
+        $conn->connect();
+        $query = "SELECT $key FROM tb_pacientes where $key = '$value'";
+        echo json_encode(['success' => $conn->query($query)->num_rows <= 0]);
+        $conn->close();
+    }
+
+    public static function findAll()
+    {
+        require 'Connection.php';
+        $conn = new Connection();
+        $conn->connect();
+        $query = "SELECT * from tb_pacientes";
+        $pacientes = [];
+        $result = $conn->query($query);
+        while ($data = $result->fetch_assoc()) {
+            array_push($pacientes, $data);
+        }
+        echo json_encode(['success' => true, 'data' => $pacientes]);
+        $conn->close();
+    }
+
+    public static function delete($id)
+    {
+        require 'Connection.php';
+        $conn = new Connection();
+        $conn->connect();
+        $query = "DELETE FROM tb_acompanhantes where id_paciente = '$id'";
+        if (!$conn->query($query)) {
+            echo json_encode(['success' => false, 'mensagem' => $conn->getError()]);
+        }
+        $query =  "DELETE FROM tb_pacientes where id_paciente = '$id'";
+        if ($conn->query($query)) {
+            echo json_encode(['success' => true, 'mensagem' => 'Paciente Removido!']);
+        } else {
+            echo json_encode(['success' => false, 'mensagem' => $conn->getError()]);
+        }
+    }
+
+    public function update($id)
+    {
+        require 'Connection.php';
+        $conn = new Connection();
+        $conn->connect();
+        $query = "UPDATE tb_pacientes SET no_paciente = ?, nu_cpf = ?, nu_rg = ?, dt_nascimento = ?, ds_genero = ?, nu_telefone = ?, nu_cep = ?, nu_paciente = ?, ds_logradouro = ?, ds_bairro = ?, ds_cidade = ?, co_estado = ?, no_mae = ?, id_convenio = ? WHERE id_paciente = '$id'";
+
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param(
+            "ssssssssssssssi",
+            $this->no_paciente,
+            $this->nu_cpf,
+            $this->nu_rg,
+            $this->dt_nascimento,
+            $this->ds_genero,
+            $this->nu_telefone,
+            $this->nu_cep,
+            $this->nu_paciente,
+            $this->ds_logradouro,
+            $this->ds_bairro,
+            $this->ds_cidade,
+            $this->co_estado,
+            $this->no_mae,
+            $this->id_convenio,
+        );
+        if ($stmt->execute()) {
+            echo json_encode(['success' => true, 'mensagem' => 'Paciente Atualizado!']);
+        } else {
+            echo json_encode(['success' => false, 'mensagem' => $conn->getError()]);
+        }
+        $conn->close();
+    }
+
+    public static function get($id)
+    {
+        require 'Connection.php';
+        $conn = new Connection();
+        $conn->connect();
+        $query = "SELECT * from tb_pacientes where id_paciente = '$id'";
+        $result = $conn->query($query);
+        if ($result->num_rows > 0) {
+            while ($data = $result->fetch_assoc()) {
+                
+                echo json_encode(['success' => true, 'data' => $data]);
+            }
+        } else {
+            echo json_encode(['success' => false, 'mensagem' => 'Não Encontrado!']);
+        }
         $conn->close();
     }
 }

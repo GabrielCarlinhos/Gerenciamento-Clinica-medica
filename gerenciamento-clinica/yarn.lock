@@ -160,7 +160,7 @@
     symbol-observable "4.0.0"
     yargs "17.7.2"
 
-"@angular/common@^16.0.0", "@angular/common@^16.0.0 || ^17.0.0", "@angular/common@^16.0.5", "@angular/common@>= 12.x.x", "@angular/common@>=10.0.0", "@angular/common@16.0.5":
+"@angular/common@^16.0.0", "@angular/common@^16.0.0 || ^17.0.0", "@angular/common@^16.0.5", "@angular/common@>= 12.x.x", "@angular/common@>=10.0.0", "@angular/common@>=16.0.0-0", "@angular/common@16.0.5":
   version "16.0.5"
   resolved "https://registry.npmjs.org/@angular/common/-/common-16.0.5.tgz"
   integrity sha512-qCcfuvs6Suqv7uA3MrtIi+aY2KW6F57XnRTzWdU3PLQjv8LHN8SZQee5ce2TQ8yCgAIdiLRGDqmLz+DvmRXiIQ==
@@ -188,7 +188,7 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/core@^16.0.0", "@angular/core@^16.0.0 || ^17.0.0", "@angular/core@^16.0.5", "@angular/core@>= 12.x.x", "@angular/core@>=10.0.0", "@angular/core@16.0.5":
+"@angular/core@^16.0.0", "@angular/core@^16.0.0 || ^17.0.0", "@angular/core@^16.0.5", "@angular/core@>= 12.x.x", "@angular/core@>=10.0.0", "@angular/core@>=16.0.0-0", "@angular/core@16.0.5":
   version "16.0.5"
   resolved "https://registry.npmjs.org/@angular/core/-/core-16.0.5.tgz"
   integrity sha512-zZYcL10eKkwjR0zIjJzqlyKpu+a0aPQrSdVUDc/ugEEcf80sN/BBEQxC8CNqccbUDFUIk/qPi/2Q9b6U1rKJpA==
@@ -279,7 +279,7 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/platform-browser@^16.0.0 || ^17.0.0", "@angular/platform-browser@^16.0.5", "@angular/platform-browser@16.0.5":
+"@angular/platform-browser@^16.0.0 || ^17.0.0", "@angular/platform-browser@^16.0.5", "@angular/platform-browser@>=16.0.0-0", "@angular/platform-browser@16.0.5":
   version "16.0.5"
   resolved "https://registry.npmjs.org/@angular/platform-browser/-/platform-browser-16.0.5.tgz"
   integrity sha512-2lTUsnrUMSVjkeEfEgDBbLFYYLWQMxxGWiEvXjJvAv/dg4YeRsEDk9TTYSmca4dtXcsa0v1AtvTRHa6lvupDwQ==
@@ -5312,6 +5312,13 @@ ngx-mask@^13.1.13:
   version "13.1.13"
   resolved "https://registry.npmjs.org/ngx-mask/-/ngx-mask-13.1.13.tgz"
   integrity sha512-WkB2JeSVH+gwi0cR/9Vz024BHJrvkFGAoTDvnTbi8AFty/bh6Wx2n5TWvaFw2WZiAO84ZkK/mOr5TZaJ+0uxUA==
+  dependencies:
+    tslib "^2.3.0"
+
+ngx-toastr@^17.0.2:
+  version "17.0.2"
+  resolved "https://registry.npmjs.org/ngx-toastr/-/ngx-toastr-17.0.2.tgz"
+  integrity sha512-KehiPx6bkbiUyJbabf0ZA04+ASumS8r/y4wPsUOMI9OrBvBcfq27UQmWuQKoVR8E+9y4Pq7eZkSg2kvxNvpxTA==
   dependencies:
     tslib "^2.3.0"
 

@@ -49,8 +49,8 @@ class Doutor
     nu_doutor, ds_logradouro, ds_bairro, ds_cidade, co_estado, co_especialidade)
     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        $exec = $conn->prepare($query);
-        $exec->bind_param(
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param(
             "ssssssssssss",
             $this->nu_crm,
             $this->no_doutor,
@@ -66,7 +66,7 @@ class Doutor
             $this->co_especialidade
         );
 
-        if ($exec->execute()) {
+        if ($stmt->execute()) {
             echo json_encode(['success' => true, 'mensagem' => 'Doutor Cadastrado!']);
         } else {
             echo json_encode(['success' => false, 'mensagem' => $conn->getError()]);
@@ -80,7 +80,7 @@ class Doutor
         require 'Connection.php';
         $conn = new Connection();
         $conn->connect();
-        $query = "SELECT * FROM tb_doutores where $key = '$value';";
+        $query = "SELECT $key FROM tb_doutores where $key = '$value';";
         echo json_encode(['success' => $conn->query($query)->num_rows <= 0]);
         $conn->close();
     }

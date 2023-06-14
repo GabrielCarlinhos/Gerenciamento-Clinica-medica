@@ -1,0 +1,38 @@
+<div class="container-fluid p-5">
+  <h2>Salvar Acompanhante</h2>
+  <form [formGroup]="form" (submit)="submit()" ngbAutoFocus>
+    <div class="d-flex flex-column">
+      <mat-form-field class="vertical-form-field">
+        <mat-label for="no_acompanhante">Nome</mat-label>
+        <input matInput formControlName="no_acompanhante">
+        <mat-error *ngIf="form.get('no_acompanhante')?.hasError('required')">{{genericRequired}}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="vertical-form-field">
+        <mat-label for="nu_cpf">Cpf</mat-label>
+        <input matInput formControlName="nu_cpf" mask="000.000.000-00">
+        <mat-error *ngIf="form.get('nu_cpf')?.hasError('required')">{{genericRequired}}</mat-error>
+        <mat-error *ngIf="form.get('nu_cpf')?.hasError('cpfInvalid')">Cpf Inválido</mat-error>
+      </mat-form-field>
+      <mat-form-field class="vertical-form-field">
+        <mat-label for="nu_telefone">Telefone</mat-label>
+        <input matInput formControlName="nu_telefone">
+        <mat-error *ngIf="form.get('nu_telefone')?.hasError('required')">{{genericRequired}}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="vertical-form-field">
+        <mat-label for="ds_email">E-mail</mat-label>
+        <input matInput formControlName="ds_email">
+        <mat-error *ngIf="form.get('ds_email')?.hasError('email')">E-mail Inválido</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="d-flex mt-3">
+      <button mat-fab extended color="primary" type="button" (click)="submit()" class="mx-2" [disabled]="form.invalid">
+        <mat-icon>add</mat-icon>
+        Salvar
+      </button>
+      <button mat-fab extended color="warn" type="button" (click)="activeModal.close()">
+        <mat-icon>close</mat-icon>
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

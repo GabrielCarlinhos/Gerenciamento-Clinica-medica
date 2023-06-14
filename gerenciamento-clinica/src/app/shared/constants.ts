@@ -6,6 +6,8 @@ export class Constants {
   static options = { withCredentials: true };
   static success = '#198754';
   static info = '#0dcaf0';
+  static primary = '#0d6efd';
+  static danger = '#dc3545';
   static currencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
     allowNegative: false,
@@ -15,6 +17,7 @@ export class Constants {
     suffix: "",
     thousands: "."
   };
+  static toastOptions = { positionClass: 'toast-top-center', closeButton: true };
   static onlyNumbers(value: string): string {
     return value.replace(/\D/g, '');
   }

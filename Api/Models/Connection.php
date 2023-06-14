@@ -21,6 +21,10 @@ class Connection
         return $this->conn->prepare($query);
     }
 
+    public function getInsertId(){
+        return $this->conn->insert_id;
+    }
+
     public function close()
     {
         $this->conn->close();

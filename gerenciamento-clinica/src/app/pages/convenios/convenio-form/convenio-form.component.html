@@ -1,0 +1,29 @@
+<app-header></app-header>
+<div class="container-fluid p-3 m-3">
+  <h2>Cadastro de Convênios</h2>
+  <form [formGroup]="form" (submit)="submit()" #formDirective="ngForm">
+    <div class="d-flex flex-column">
+      <mat-form-field class="vertical-form-field">
+        <mat-label for="no_convenio">Nome do Convênio</mat-label>
+        <input matInput formControlName="no_convenio">
+        <mat-error *ngIf="form.get('no_convenio')?.hasError('required')">{{genericRequired}}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="vertical-form-field">
+        <mat-label for="nu_convenio">Número</mat-label>
+        <input matInput type="number" formControlName="nu_convenio">
+        <mat-error *ngIf="form.get('nu_convenio')?.hasError('required')">{{genericRequired}}</mat-error>
+        <mat-error *ngIf="form.get('nu_convenio')?.hasError('duplicate')">Número já Cadastrado</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="d-flex">
+      <button mat-fab extended class="mx-2" color="primary" type="submit" [disabled]="form.invalid || validating">
+        <mat-icon>add</mat-icon>
+        Salvar
+      </button>
+      <button mat-fab extended color="warn" type="button" routerLink="/principal">
+        <mat-icon>close</mat-icon>
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

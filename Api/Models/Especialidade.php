@@ -1,7 +1,7 @@
 <?php
 header('Access-Control-Allow-Origin: http://localhost:4200');
 header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Methods: GET, POST');
+header('Access-Control-Allow-Methods: GET, POST, PUT');
 header('Access-Control-Allow-Headers: Content-Type');
 class Especialidade
 {
@@ -29,11 +29,11 @@ class Especialidade
         $query = "INSERT INTO tb_especialidades(ds_especialidade, vl_consulta)
     VALUES(?, ?)";
 
-        $exec = $conn->prepare($query);
-        $exec->bind_param("ss", $this->ds_especialidade, $this->vl_consulta);
-
-        if ($exec->execute()) {
-            echo json_encode(['success' => true, 'mensagem' => 'Especialidade Cadastrada!']);
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("ss", $this->ds_especialidade, $this->vl_consulta);
+        if ($stmt->execute()) {
+            $this->co_especialidade = $conn->getInsertId();
+            echo json_encode(['success' => true, 'mensagem' => 'Especialidade Cadastrada!', 'data' => $this]);
         } else {
             echo json_encode(['success' => false, 'mensagem' => $conn->getError()]);
         }
@@ -55,5 +55,47 @@ class Especialidade
             }
             echo json_encode(['success' => true, 'data' => $especialidades]);
         }
+        $conn->close();
+    }
+
+    public static function delete($id)
+    {
+        require 'Connection.php';
+        $conn = new Connection();
+        $conn->connect();
+        $query = "SELECT nu_doutor from tb_doutores where co_especialidade = '$id'";
+        if ($conn->query($query)->num_rows > 0) {
+            echo json_encode(['success' => false, 'mensagem' => 'Não é possível remover uma especialidade atribuída a algum doutor!']);
+            $conn->close();
+            return;
+        }
+        $query = "DELETE FROM tb_especialidades where co_especialidade = '$id'";
+        if ($conn->query($query)) {
+            echo json_encode(['success' => true, 'mensagem' => "Especialidade Removida!"]);
+        } else {
+            echo json_encode(['success' => false, 'mensagem' => $conn->getError()]);
+        }
+        $conn->close();
+    }
+
+    public function update($id)
+    {
+        require 'Connection.php';
+        $conn = new Connection();
+        $conn->connect();
+        $query = "UPDATE tb_especialidades set ds_especialidade = ?, vl_consulta = ? WHERE co_especialidade='$id'";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param(
+            "ss",
+            $this->ds_especialidade,
+            $this->vl_consulta
+        );
+        if ($stmt->execute()) {
+            $this->co_especialidade = $conn->getInsertId();
+            echo json_encode(['success' => true, 'mensagem' => 'Especialidade Atualizada!', 'data' => $this]);
+        } else {
+            echo json_encode(['success' => false, 'mensagem' => $conn->getError()]);
+        }
+        $conn->close();
     }
 }

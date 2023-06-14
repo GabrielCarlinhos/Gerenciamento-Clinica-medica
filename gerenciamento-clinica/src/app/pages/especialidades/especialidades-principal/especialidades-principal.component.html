@@ -1,0 +1,30 @@
+<app-header></app-header>
+<div class="container-fluid p-5">
+  <h2>Especialidades</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <td>#</td>
+          <td>Especialidade</td>
+          <td>Valor da Consulta</td>
+          <td class="text-info text-center">Editar</td>
+          <td class="text-danger text-center">Remover</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="m-3" *ngFor="let especialidade of especialidades;let i = index">
+          <td>{{i+1}}</td>
+          <td>{{especialidade.ds_especialidade}}</td>
+          <td>{{especialidade.vl_consulta | currency: 'BRL'}}</td>
+          <td class="text-center">
+            <mat-icon role="button" (click)="update(especialidade)">edit</mat-icon>
+          </td>
+          <td class="text-center">
+            <mat-icon role="button" (click)="delete(especialidade.co_especialidade)">delete</mat-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

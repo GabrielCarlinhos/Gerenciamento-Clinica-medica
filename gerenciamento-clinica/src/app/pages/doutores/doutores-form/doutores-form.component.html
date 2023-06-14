@@ -17,12 +17,13 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="co_especialidade">Especialidade</mat-label>
-        <mat-select formControlName="co_especialidade">
+        <mat-select formControlName="co_especialidade" [(value)]="selectedEspecialidade">
+          <mat-option value="option1">aaaaaaa</mat-option>
           <mat-option *ngFor="let especialidade of especialidades" [value]="especialidade.co_especialidade">
             {{especialidade.ds_especialidade}}
           </mat-option>
         </mat-select>
-        <mat-icon matSuffix role="button" class="icon-suffix" color="primary" routerLink="/especialidade/form">add
+        <mat-icon matSuffix role="button" class="icon-suffix" color="primary" (click)="openModalEspecialidades()">add
         </mat-icon>
         <mat-error *ngIf="form.get('co_especialidade')?.hasError('required')">{{genericRequired}}</mat-error>
       </mat-form-field>
@@ -50,7 +51,8 @@
         <input matInput type="text" mask="99999-999" formControlName="nu_cep">
         <mat-icon matSuffix color="info" class="icon-suffix" role="button" (click)="navigateCep()">search</mat-icon>
         <mat-error *ngIf="form.get('nu_cep')?.hasError('required')">{{genericRequired}}</mat-error>
-        <mat-error *ngIf="form.get('nu_cep')?.hasError('customError') || form.get('nu_cep')?.hasError('mask')">CEP Inválido</mat-error>
+        <mat-error *ngIf="form.get('nu_cep')?.hasError('customError') || form.get('nu_cep')?.hasError('mask')">CEP
+          Inválido</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="nu_doutor">Número</mat-label>
@@ -86,7 +88,7 @@
       <button type="submit" mat-fab extended color="primary" class="mx-2" #submitButton
         [disabled]="validating || form.invalid">
         <mat-icon>save</mat-icon>
-        Adicionar
+        Salvar
       </button>
       <button type="button" routerLink="/principal" mat-fab extended color="warn" class="mx-2">
         <mat-icon>close</mat-icon>

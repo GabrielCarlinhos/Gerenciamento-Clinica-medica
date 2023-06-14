@@ -10,22 +10,26 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="nu_cpf">CPF</mat-label>
-        <input matInput formControlName="nu_cpf" mask="000.000.000-00">
+        <input matInput formControlName="nu_cpf" mask="000.000.000-00" (focus)="validating = true"
+          (blur)="validating = false" (change)="form.get('nu_cpf')?.value.length == 11 ? validateCpf() : null">
         <mat-error *ngIf="form.get('nu_cpf')?.hasError('required')">{{genericRequired}}</mat-error>
         <mat-error *ngIf="form.get('nu_cpf')?.hasError('cpfInvalid') || form.get('nu_cpf')?.hasError('mask')">Cpf
           inválido</mat-error>
+        <mat-error *ngIf="form.get('nu_cpf')?.hasError('duplicate')">Cpf já Cadastrado</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="nu_rg">RG</mat-label>
-        <input matInput formControlName="nu_rg" mask="0000099999">
+        <input matInput formControlName="nu_rg" mask="0000099999" (focus)="validating = true"
+          (blur)="validating = false" (change)="form.get('nu_rg')?.value.length >=5 ? validateRg() : null">
         <mat-error *ngIf="form.get('nu_rg')?.hasError('required')">{{genericRequired}}</mat-error>
-        <mat-error *ngIf="form.get('nu_cep')?.hasError('mask')">Rg Inválido</mat-error>
+        <mat-error *ngIf="form.get('nu_rg')?.hasError('mask')">Rg Inválido</mat-error>
+        <mat-error *ngIf="form.get('nu_rg')?.hasError('duplicate')">Rg já Cadastrado</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="dt_nascimento">Data de Nascimento</mat-label>
         <input matInput [matDatepicker]="picker" formControlName="dt_nascimento">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
+        <mat-datepicker #picker startView="multi-year" [startAt]="startDate"></mat-datepicker>
         <mat-error *ngIf="form.get('dt_nascimento')?.hasError('required')">{{genericRequired}}</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
@@ -56,10 +60,12 @@
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="ds_logradouro">Logradouro</mat-label>
         <input matInput formControlName="ds_logradouro">
+        <mat-error *ngIf="form.get('ds_logradouro')?.hasError('required')">{{genericRequired}}</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="ds_bairro">Bairro</mat-label>
         <input matInput formControlName="ds_bairro">
+        <mat-error *ngIf="form.get('ds_bairro')?.hasError('required')">{{genericRequired}}</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="ds_cidade">Cidade</mat-label>
@@ -76,14 +82,30 @@
         <mat-error *ngIf="form.get('co_estado')?.hasError('required')">{{genericRequired}}</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
+        <mat-label for="no_mae">Nome da Mãe</mat-label>
+        <input matInput formControlName="no_mae">
+        <mat-error *ngIf="form.get('no_mae')?.hasError('required')">{{genericRequired}}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="id_convenio">Convênio</mat-label>
-        <input matInput formControlName="id_convenio">
+        <input matInput formControlName="nu_convenio" type="number" (change)="validateNumero()"
+          (focus)="validating = true" (blur)="validating = false" placeholder="Digite o Número do Convênio">
+        <mat-error *ngIf="form.get('nu_convenio')?.hasError('inexistent')">Número não cadastrado</mat-error>
+      </mat-form-field>
+      <mat-form-field class="col-sm-6 col-md-4 align-self-center text-start">
+        <mat-label for="acompanhante">Acompanhante</mat-label>
+        <input matInput formControlName="no_acompanhante" placeholder="Clique no botão ao lado para adicionar"
+          readonly="readonly">
+        <mat-icon matSuffix (click)="openModalAcompanhante()" color="primary" role="button" class="icon-suffix">add
+        </mat-icon>
+        <mat-error *ngIf="form.get('no_acompanhante')?.hasError('required')">Paciente menor de idade deve ter um
+          acompanhante</mat-error>
       </mat-form-field>
     </div>
     <div class="d-flex justify-content-end me-5">
-      <button type="submit" mat-fab extended color="primary" class="mx-2" [disabled]="form.invalid">
+      <button type="submit" mat-fab extended color="primary" class="mx-2" [disabled]="form.invalid || validating">
         <mat-icon>save</mat-icon>
-        Adicionar
+        Salvar
       </button>
       <button type="button" routerLink="/principal" mat-fab extended color="warn" class="mx-2">
         <mat-icon>close</mat-icon>

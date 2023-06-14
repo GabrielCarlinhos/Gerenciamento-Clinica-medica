@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormGroupDirective, NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { first } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { first, take } from 'rxjs';
 import { Especialidade } from 'src/app/models/especialidade.model';
 import { Estado } from 'src/app/models/estado.model';
 import { CepService } from 'src/app/services/cep.service';
@@ -12,6 +13,7 @@ import { Constants } from 'src/app/shared/constants';
 import { cpfValidator } from 'src/app/validators/cpf.validator';
 
 import Swal from 'sweetalert2';
+import { EspecialidadeFormComponent } from '../../especialidades/especialidade-form/especialidade-form.component';
 
 
 @Component({
@@ -31,12 +33,17 @@ export class DoutoresFormComponent implements OnInit {
 
   public validating: boolean = false;
 
+  private submited: boolean = false;
+
+  public selectedEspecialidade: string | null = null;
+
   @ViewChild('formDirective') private formDirective?: NgForm
 
   constructor(private formBuilder: FormBuilder,
     private estadoService: EstadoService,
     private doutorService: DoutorService,
     private especialidadeService: EspecialidadeService,
+    private modal: NgbModal,
     private router: Router,
     private cepService: CepService,
   ) {
@@ -54,6 +61,7 @@ export class DoutoresFormComponent implements OnInit {
       'ds_cidade': [null, Validators.required],
       'co_especialidade': [null, Validators.required],
     })
+
     this.form.get('nu_cep')?.valueChanges.subscribe((value) => {
       if (value && value.toString().length >= 8) {
         this.cepService.fillCep(value, this.form);
@@ -99,9 +107,10 @@ export class DoutoresFormComponent implements OnInit {
     })
   }
 
-  loadEspecialidades() {
+  loadEspecialidades(setValue: string | null = null) {
     this.especialidadeService.findAll().pipe(first()).subscribe((response) => {
       this.especialidades = response.data;
+      this.selectedEspecialidade = setValue;
     })
   }
 
@@ -110,10 +119,11 @@ export class DoutoresFormComponent implements OnInit {
   }
 
   submit() {
-    if (this.form.invalid) {
+    if (this.form.invalid || this.submited) {
       return;
     }
-    this.doutorService.create(this.form.value).pipe(first()).subscribe((response) => {
+    this.submited = true;
+    this.doutorService.create(this.form.value).pipe(first(), take(1)).subscribe((response) => {
       if (response.success) {
         Swal.fire({
           icon: 'success',
@@ -125,12 +135,13 @@ export class DoutoresFormComponent implements OnInit {
         }).then((result) => {
           if (result.isDenied) {
             this.router.navigate(['/principal']);
-          } else if (result.isConfirmed) {
+          } else if (result.isConfirmed || result.isDismissed) {
             this.form.reset();
             this.formDirective?.resetForm();
           }
         });
       }
+      this.submited = false;
     })
   }
 
@@ -143,6 +154,13 @@ export class DoutoresFormComponent implements OnInit {
       } else {
         this.validating = false;
       }
+    })
+  }
+
+  openModalEspecialidades() {
+    const modalEspecialidade = this.modal.open(EspecialidadeFormComponent, { size: 'md' });
+    modalEspecialidade.componentInstance.setEspecialidade.subscribe(($e: Especialidade) => {
+      this.loadEspecialidades(String($e.co_especialidade));
     })
   }
 

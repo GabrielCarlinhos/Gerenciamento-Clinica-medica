@@ -22,8 +22,6 @@ class Usuario
     }
     public function login()
     {
-
-
         require 'Connection.php';
         $conn = new Connection();
         $conn->connect();
@@ -41,5 +39,30 @@ class Usuario
             $_SESSION['logado'] = false;
             echo json_encode(['success' => false, 'mensagem' => 'Nome de Usuário ou senha incorretos']);
         }
+        $conn->close();
+    }
+
+    public function create()
+    {
+        require 'Connection.php';
+        $conn = new Connection();
+        $conn->connect();
+
+        $query = "INSERT INTO tb_usuarios(no_usuario,ds_senha,ds_email,ds_tipo_usuario) VALUES(?,?,?,?)";
+
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param(
+            "ssss",
+            $this->no_usuario,
+            $this->ds_senha,
+            $this->ds_email,
+            $this->ds_tipo_usuario
+        );
+        if ($stmt->execute()) {
+            echo json_encode(['success' => true, 'mensagem' => 'Usuário Cadastrado!']);
+        } else {
+            echo json_encode(['success' => false, 'mensagem' => $conn->getError()]);
+        }
+        $conn->close();
     }
 };

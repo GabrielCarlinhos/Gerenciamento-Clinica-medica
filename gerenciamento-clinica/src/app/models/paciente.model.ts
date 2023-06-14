@@ -21,6 +21,6 @@ export class Paciente {
     nu_rg?: string;
     id_convenio?: number;
     convenio?: Convenio;
-    acompanhantes?: Acompanhante[];
+    acompanhante?: Acompanhante;
     prontuario?: Prontuario;
 }

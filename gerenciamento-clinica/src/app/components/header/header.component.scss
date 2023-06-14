@@ -3,7 +3,7 @@
 .navbar-nav-container {
   display: flex;
   max-width: 75vw;
- 
+
 }
 
 .navbar-scroll {
@@ -11,10 +11,7 @@
 }
 
 .dropdown-menu {
-  background-color:$primary;
+  background-color: $primary;
   border: none;
 }
 
-nav{
-  font-size:large;
-}
