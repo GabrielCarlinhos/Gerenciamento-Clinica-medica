@@ -146,7 +146,7 @@ class Paciente
 
         $stmt = $conn->prepare($query);
         $stmt->bind_param(
-            "ssssssssssssssi",
+            "ssssssssssssss",
             $this->no_paciente,
             $this->nu_cpf,
             $this->nu_rg,
@@ -170,17 +170,40 @@ class Paciente
         $conn->close();
     }
 
+    private static function buildAcompanhante($data = [])
+    {
+        require 'Acompanhante.php';
+        $id_acompanhante = $data['id_acompanhante'];
+        $no_acompanhante = $data['no_acompanhante'];
+        $nu_cpf = $data['cpf_acompanhante'];
+        $nu_telefone = $data['telefone_acompanhante'];
+        $ds_email = $data['email_acompanhante'];
+
+        return new Acompanhante(['id_acompanhante' => $id_acompanhante, 'no_acompanhante' => $no_acompanhante, 'nu_cpf' => $nu_cpf, 'nu_telefone' => $nu_telefone, 'ds_email' => $ds_email]);
+    }
+
+    private static function buildConvenio($data = [])
+    {
+        require 'Convenio.php';
+        $no_convenio = $data['no_convenio'];
+        $nu_convenio = $data['nu_convenio'];
+
+        return new Convenio(['no_convenio' => $no_convenio, 'nu_convenio' => $nu_convenio]);
+    }
+
     public static function get($id)
     {
         require 'Connection.php';
         $conn = new Connection();
         $conn->connect();
-        $query = "SELECT * from tb_pacientes where id_paciente = '$id'";
+        $query = "SELECT * from view_paciente where id_paciente = '$id'";
         $result = $conn->query($query);
         if ($result->num_rows > 0) {
             while ($data = $result->fetch_assoc()) {
-                
-                echo json_encode(['success' => true, 'data' => $data]);
+                $paciente = new Paciente($data);
+                $paciente->acompanhante = Paciente::buildAcompanhante($data);
+                $paciente->convenio = Paciente::buildConvenio($data);
+                echo json_encode(['success' => true, 'data' => $paciente]);
             }
         } else {
             echo json_encode(['success' => false, 'mensagem' => 'Não Encontrado!']);

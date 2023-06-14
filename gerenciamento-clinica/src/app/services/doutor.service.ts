@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Sucesso } from '../shared/sucesso.model';
+import { Sucesso, SucessoLista } from '../shared/sucesso.model';
 import { Doutor } from '../models/doutor.model';
 import { Constants } from '../shared/constants';
 
@@ -24,6 +24,22 @@ export class DoutorService {
 
   validateRg(rg: string) {
     return this.http.get<any>(`${Constants.api}/doutorValidateRg.php?rg=${rg}`);
+  }
+
+  findAll() {
+    return this.http.get<SucessoLista<Doutor>>(`${Constants.api}/doutorFindAll.php`);
+  }
+
+  delete(crm: string) {
+    return this.http.put<Sucesso<any>>(`${Constants.api}/doutorDelete.php?crm=${crm}`, {});
+  }
+
+  update(doutor: Doutor, crm: string) {
+    return this.http.put<Sucesso<Doutor>>(`${Constants.api}/doutorUpdate.php?crm=${crm}`, doutor);
+  }
+
+  get(crm: string) {
+    return this.http.get<Sucesso<Doutor>>(`${Constants.api}/doutorGet.php?crm=${crm}`);
   }
 
 }

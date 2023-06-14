@@ -75,6 +75,34 @@ constraint pk_paciente primary key (id_paciente),
 constraint fk_id_convenio foreign key(id_convenio) references tb_convenios(id_convenio)
 );
 
+CREATE VIEW view_paciente AS
+SELECT p.*, c.no_convenio,c.nu_convenio,a.id_acompanhante, a.no_acompanhante, a.nu_cpf AS cpf_acompanhante, a.nu_telefone AS telefone_acompanhante, a.ds_email AS email_acompanhante
+FROM tb_pacientes AS p
+LEFT JOIN tb_convenios AS c ON p.id_convenio = c.id_convenio
+LEFT JOIN tb_acompanhantes AS a ON a.id_paciente = p.id_paciente;
+
+
+CREATE VIEW view_agenda AS SELECT
+  e.*,
+  d.no_doutor,
+  a.co_agendamento,
+  a.dt_agendamento,
+  a.id_paciente as agendamento_id_paciente,
+  a.in_cancelado,
+  a.ds_motivo_cancelamento,
+  p.id_paciente,
+  p.no_paciente,
+  p.id_convenio
+FROM
+  tb_especialidades e
+LEFT JOIN
+  tb_doutores d ON e.co_especialidade = d.co_especialidade
+LEFT JOIN
+  tb_agendamentos a ON a.nu_crm_doutor = d.nu_crm
+LEFT JOIN
+  tb_pacientes p ON a.id_paciente = p.id_paciente
+;
+
 create table if not exists tb_acompanhantes(
 id_acompanhante int not null auto_increment,
 no_acompanhante varchar(45) not null,

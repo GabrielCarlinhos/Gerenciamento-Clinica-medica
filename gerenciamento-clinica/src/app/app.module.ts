@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { DatePipe } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TelaLoginComponent } from './pages/tela-login/tela-login.component';
@@ -37,6 +37,7 @@ import { PacientesPrincipalComponent } from './pages/pacientes/pacientes-princip
 import { DoutoresPrincipalComponent } from './pages/doutores/doutores-principal/doutores-principal.component';
 import { ConveniosPrincipalComponent } from './pages/convenios/convenios-principal/convenios-principal.component';
 import { ToastrModule } from 'ngx-toastr';
+import { AgendamentoPrincipalComponent } from './pages/agendamento/agendamento-principal/agendamento-principal.component';
 
 export const options: Partial<null | IConfig> | (() => Partial<IConfig>) = null;
 
@@ -57,7 +58,8 @@ export const options: Partial<null | IConfig> | (() => Partial<IConfig>) = null;
     EspecialidadesPrincipalComponent,
     PacientesPrincipalComponent,
     DoutoresPrincipalComponent,
-    ConveniosPrincipalComponent
+    ConveniosPrincipalComponent,
+    AgendamentoPrincipalComponent
   ],
   imports: [
     BrowserModule,
@@ -87,6 +89,7 @@ export const options: Partial<null | IConfig> | (() => Partial<IConfig>) = null;
     { provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'accent' } },
     UsuarioService,
     AuthGuard,
+    DatePipe,
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
   ],
   bootstrap: [AppComponent],

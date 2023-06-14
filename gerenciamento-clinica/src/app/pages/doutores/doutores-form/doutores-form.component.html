@@ -5,7 +5,8 @@
     <div class="row">
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="nu_crm">CRM</mat-label>
-        <input matInput type="text" mask="000009" formControlName="nu_crm" (blur)="validateCrm()">
+        <input matInput type="text" mask="000009" formControlName="nu_crm" (change)="validateCrm()"
+          (focus)="validating = true" (blur)="validating = false">
         <mat-error *ngIf="form.get('nu_crm')?.hasError('required')">{{genericRequired}}</mat-error>
         <mat-error *ngIf="form.get('nu_crm')?.hasError('mask')">CRM Inválido</mat-error>
         <mat-error *ngIf="form.get('nu_crm')?.hasError('duplicate')">CRM já Cadastrado</mat-error>
@@ -29,7 +30,8 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="nu_cpf">CPF</mat-label>
-        <input matInput formControlName="nu_cpf" mask="000.000.000-00">
+        <input matInput formControlName="nu_cpf" mask="000.000.000-00" (change)="validateCpf()"
+          (focus)="validating = true" (blur)="validating = false">
         <mat-error *ngIf="form.get('nu_cpf')?.hasError('required')">{{genericRequired}}</mat-error>
         <mat-error *ngIf="form.get('nu_cpf')?.hasError('cpfInvalid') || form.get('nu_cpf')?.hasError('mask')">Cpf
           Inválido</mat-error>
@@ -37,7 +39,8 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="nu_rg">RG</mat-label>
-        <input matInput maxlength="11" type="text" formControlName="nu_rg" mask="00000999999">
+        <input matInput maxlength="11" type="text" formControlName="nu_rg" mask="00000999999" (change)="validateRg()"
+          (focus)="validating=true" (blur)="validating=false">
         <mat-error *ngIf="form.get('nu_rg')?.hasError('required')">{{genericRequired}}</mat-error>
         <mat-error *ngIf="form.get('nu_rg')?.hasError('duplicate')">Rg já Cadastrado</mat-error>
         <mat-error *ngIf="form.get('nu_rg')?.hasError('minLength')">RG Inválido</mat-error>

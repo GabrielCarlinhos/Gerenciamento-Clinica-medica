@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormGroupDirective, NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { first, take } from 'rxjs';
 import { Especialidade } from 'src/app/models/especialidade.model';
@@ -37,6 +37,17 @@ export class DoutoresFormComponent implements OnInit {
 
   public selectedEspecialidade: string | null = null;
 
+  private crm_doutor!: string;
+  set _crm_doutor(value: string) {
+    this.crm_doutor = value;
+    this.doutorService.get(value).pipe(first()).subscribe((response) => {
+      if (response.success) {
+        this.form.patchValue(response.data);
+        this.submit = this.update;
+      }
+    })
+  }
+
   @ViewChild('formDirective') private formDirective?: NgForm
 
   constructor(private formBuilder: FormBuilder,
@@ -46,6 +57,7 @@ export class DoutoresFormComponent implements OnInit {
     private modal: NgbModal,
     private router: Router,
     private cepService: CepService,
+    private route: ActivatedRoute,
   ) {
     this.form = this.formBuilder.group({
       'nu_crm': [null, [Validators.required]],
@@ -67,36 +79,15 @@ export class DoutoresFormComponent implements OnInit {
         this.cepService.fillCep(value, this.form);
       }
     })
-    this.form.get('nu_cpf')?.valueChanges.subscribe((value) => {
-      if (value && value.length == 11) {
-        this.validating = true;
-        this.doutorService.validateCpf(value).pipe(first()).subscribe((response) => {
-          if (!response.success) {
-            this.form.get('nu_cpf')?.setErrors({ 'duplicate': true });
-            this.validating = false
-          } else {
-            this.validating = false;
-          }
-        })
-      }
-    })
-
-    this.form.get('nu_rg')?.valueChanges.subscribe((value) => {
-      if (value && value.length >= 5) {
-        this.validating = true;
-        this.doutorService.validateRg(value).pipe(first()).subscribe((response) => {
-          if (!response.success) {
-            this.form.get('nu_rg')?.setErrors({ 'duplicate': true });
-            this.validating = false
-          } else {
-            this.validating = false;
-          }
-        })
-      }
-    })
   }
 
   ngOnInit(): void {
+    if (this.route.params)
+      this.route.params.subscribe((params) => {
+        if (Object.keys(params).length > 0) {
+          this._crm_doutor = params['crm'];
+        }
+      })
     this.loadEstados();
     this.loadEspecialidades();
   }
@@ -145,6 +136,30 @@ export class DoutoresFormComponent implements OnInit {
     })
   }
 
+  update() {
+    if (this.form.invalid || this.validating) {
+      return;
+    }
+    this.submited = true;
+    this.doutorService.update(this.form.value, this.crm_doutor).pipe(first()).subscribe((response) => {
+      if (response.success) {
+        Swal.fire({
+          icon: 'success',
+          text: response.mensagem,
+          color: Constants.success,
+          showDenyButton: true,
+          denyButtonText: 'Voltar para Início',
+          confirmButtonText: 'Continuar',
+        }).then((result) => {
+          if (result.isDenied) {
+            this.router.navigate(['/principal']);
+          }
+        })
+      }
+      this.submited = false;
+    })
+  }
+
   validateCrm() {
     this.validating = true;
     this.doutorService.validateCrm(this.form.get('nu_crm')?.value).pipe(first()).subscribe((response) => {
@@ -161,6 +176,30 @@ export class DoutoresFormComponent implements OnInit {
     const modalEspecialidade = this.modal.open(EspecialidadeFormComponent, { size: 'md' });
     modalEspecialidade.componentInstance.setEspecialidade.subscribe(($e: Especialidade) => {
       this.loadEspecialidades(String($e.co_especialidade));
+    })
+  }
+
+  validateRg() {
+    this.validating = true;
+    this.doutorService.validateRg(this.form.get('nu_rg')?.value).pipe(first()).subscribe((response) => {
+      if (!response.success) {
+        this.form.get('nu_rg')?.setErrors({ 'duplicate': true });
+        this.validating = false
+      } else {
+        this.validating = false;
+      }
+    })
+  }
+
+  validateCpf() {
+    this.validating = true;
+    this.doutorService.validateCpf(this.form.get('nu_cpf')?.value).pipe(first()).subscribe((response) => {
+      if (!response.success) {
+        this.form.get('nu_cpf')?.setErrors({ 'duplicate': true });
+        this.validating = false
+      } else {
+        this.validating = false;
+      }
     })
   }
 

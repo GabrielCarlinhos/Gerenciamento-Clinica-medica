@@ -3,7 +3,7 @@ import { Acompanhante } from './acompanhante.model';
 import { Prontuario } from './prontuario.model';
 
 export class Paciente {
-    id_paciente?: number;
+    id_paciente!: number;
     no_paciente?: string;
     nu_cpf?: string;
     nu_telefone?: string;
@@ -20,7 +20,7 @@ export class Paciente {
     no_mae?: string;
     nu_rg?: string;
     id_convenio?: number;
-    convenio?: Convenio;
+    convenio!: Convenio;
     acompanhante?: Acompanhante;
     prontuario?: Prontuario;
 }

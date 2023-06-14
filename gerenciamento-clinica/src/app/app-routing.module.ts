@@ -12,6 +12,7 @@ import { EspecialidadesPrincipalComponent } from './pages/especialidades/especia
 import { DoutoresPrincipalComponent } from './pages/doutores/doutores-principal/doutores-principal.component';
 import { ConveniosPrincipalComponent } from './pages/convenios/convenios-principal/convenios-principal.component';
 import { PacientesPrincipalComponent } from './pages/pacientes/pacientes-principal/pacientes-principal.component';
+import { AgendamentoPrincipalComponent } from './pages/agendamento/agendamento-principal/agendamento-principal.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -22,9 +23,12 @@ const routes: Routes = [
   { path: 'convenio', component: ConveniosPrincipalComponent, canActivate: [AuthGuard] },
   { path: 'paciente', component: PacientesPrincipalComponent, canActivate: [AuthGuard] },
   { path: 'doutor/form', component: DoutoresFormComponent, canActivate: [AuthGuard] },
+  { path: 'doutor/form/:crm', component: DoutoresFormComponent, canActivate: [AuthGuard] },
+  { path: 'paciente/form', component: PacienteFormComponent, canActivate: [AuthGuard] },
   { path: 'paciente/form/:id', component: PacienteFormComponent, canActivate: [AuthGuard] },
   { path: 'usuario/form', component: UsuarioFormComponent, canActivate: [AuthGuard] },
   { path: 'convenio/form', component: ConvenioFormComponent, canActivate: [AuthGuard] },
+  { path: 'agendamento/principal', component: AgendamentoPrincipalComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: 'login' }
 ];
 

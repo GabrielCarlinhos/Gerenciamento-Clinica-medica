@@ -1,7 +1,7 @@
 export class Sucesso<T> {
   success?: boolean;
   mensagem?: string;
-  data?: T;
+  data!: T;
 }
 export class SucessoLista<T> {
   success?: boolean;

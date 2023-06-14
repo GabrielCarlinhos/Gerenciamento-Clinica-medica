@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormGroupDirective, NgForm } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 import { Estado } from 'src/app/models/estado.model';
 import { CepService } from 'src/app/services/cep.service';
 import { EstadoService } from 'src/app/services/estado.service';
@@ -35,8 +36,14 @@ export class PacienteFormComponent implements OnInit {
 
   set _id_paciente(value: number) {
     this.pacienteService.get(value).pipe(first()).subscribe((response) => {
-      this.form.patchValue(response);
+      this.id_paciente = response.data.id_paciente;
+      response.data.dt_nascimento = new Date(response.data.dt_nascimento!);
+      response.data.dt_nascimento.setDate(response.data.dt_nascimento.getDate() + 1);
+      this.form.patchValue(response.data);
+      this.form.patchValue(response.data.convenio);
       this.submit = this.update;
+      this.form.get('acompanhante')?.setValue(response.data.acompanhante);
+      this.form.get('no_acompanhante')?.setValue(response.data.acompanhante?.no_acompanhante);
     })
   }
 
@@ -52,6 +59,7 @@ export class PacienteFormComponent implements OnInit {
     private modal: NgbModal,
     private router: Router,
     private route: ActivatedRoute,
+    private datePipe: DatePipe
   ) {
     this.form = this.formBuilder.group({
       'no_paciente': [null, [Validators.required]],
@@ -100,7 +108,9 @@ export class PacienteFormComponent implements OnInit {
   ngOnInit(): void {
     this.loadEstados();
     this.route.params.subscribe(params => {
-      this._id_paciente = params['id'];
+      if (Object.keys(params).length > 0) {
+        this._id_paciente = params['id'];
+      }
     })
   }
 
@@ -146,10 +156,7 @@ export class PacienteFormComponent implements OnInit {
           denyButtonText: 'Voltar para Início',
           confirmButtonText: 'Continuar',
         }).then((response) => {
-          if (response.isConfirmed || response.isDismissed) {
-            this.form.reset();
-            this.formDirective?.resetForm();
-          } else if (response.isDenied) {
+          if (response.isDenied) {
             this.router.navigate(['/principal']);
           }
         })

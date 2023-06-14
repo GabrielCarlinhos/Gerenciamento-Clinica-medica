@@ -1,1 +1,36 @@
-<p>doutores-principal works!</p>
+<app-header></app-header>
+<div class="container-fluid p-3">
+  <h2>Doutores</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <td>CRM</td>
+          <td>Doutor</td>
+          <td>Telefone</td>
+          <td>Especialidade</td>
+          <td>Endereço</td>
+          <td class="text-center text-info">Editar</td>
+          <td class="text-center text-danger">Remover</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let doutor of doutores">
+          <td>{{doutor.nu_crm}}</td>
+          <td>{{doutor.no_doutor}}</td>
+          <td>{{doutor.nu_telefone}}</td>
+          <td>{{doutor.especialidade?.ds_especialidade}}</td>
+          <td>
+            {{doutor.ds_logradouro + ', ' + (doutor.nu_doutor ? doutor.nu_doutor + '' : '') + ', ' + doutor.ds_cidade + ' - ' + doutor.co_estado}}
+          </td>
+          <td class="text-center text-info">
+            <mat-icon role="button" routerLink="/doutor/form/{{doutor.nu_crm}}">edit</mat-icon>
+          </td>
+          <td class="text-center text-danger">
+            <mat-icon role="button" (click)="delete(doutor.nu_crm)">delete</mat-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
