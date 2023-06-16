@@ -113,7 +113,6 @@ constraint foreign key(id_paciente) references tb_pacientes (id_paciente),
 constraint foreign key(nu_crm_doutor) references tb_doutores (nu_crm)
 );
 
-
 create table if not exists tb_prontuarios(
 id_prontuario int not null auto_increment,
 nu_peso float,
@@ -123,11 +122,9 @@ ds_exame_fisico mediumtext,
 ds_solicitacao_exame mediumtext,
 tp_sanguineo enum('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
 ds_alergias mediumtext,
-id_paciente int not null,
-nu_crm_doutor int not null,
+co_consulta int not null,
 constraint primary key (id_prontuario),
-constraint foreign key(id_paciente) references tb_pacientes (id_paciente),
-constraint foreign key(nu_crm_doutor) references tb_doutores (nu_crm)
+constraint foreign key (co_consulta) references tb_consultas(co_consulta)
 );
 
 create table if not exists tb_estados (
