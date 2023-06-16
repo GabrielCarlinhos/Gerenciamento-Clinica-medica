@@ -13,6 +13,7 @@ import { DoutoresPrincipalComponent } from './pages/doutores/doutores-principal/
 import { ConveniosPrincipalComponent } from './pages/convenios/convenios-principal/convenios-principal.component';
 import { PacientesPrincipalComponent } from './pages/pacientes/pacientes-principal/pacientes-principal.component';
 import { AgendamentoPrincipalComponent } from './pages/agendamento/agendamento-principal/agendamento-principal.component';
+import { ConsultasPrincipalComponent } from './pages/consultas/consultas-principal/consultas-principal.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'usuario/form', component: UsuarioFormComponent, canActivate: [AuthGuard] },
   { path: 'convenio/form', component: ConvenioFormComponent, canActivate: [AuthGuard] },
   { path: 'agendamento/principal', component: AgendamentoPrincipalComponent, canActivate: [AuthGuard] },
+  { path: 'consultas/principal', component: ConsultasPrincipalComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: 'login' }
 ];
 

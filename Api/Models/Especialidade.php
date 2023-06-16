@@ -9,11 +9,14 @@ class Especialidade
     public $co_especialidade;
     public $ds_especialidade;
     public $vl_consulta;
+    public $doutores;
 
     public function __construct($data = [])
     {
+        $this->co_especialidade = $data['co_especialidade'] ?? null;
         $this->ds_especialidade = $data['ds_especialidade'] ?? null;
         $this->vl_consulta = $data['vl_consulta'] ?? null;
+        $this->doutores = $data['doutores'] ?? null;
     }
 
     public function create()

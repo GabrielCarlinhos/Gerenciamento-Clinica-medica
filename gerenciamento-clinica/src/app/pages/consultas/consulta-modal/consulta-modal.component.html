@@ -1,0 +1,35 @@
+<div class="container-fluid p-5">
+  <h2>Gerar Consulta</h2>
+  <form [formGroup]="form" (submit)="submit()">
+    <div class="d-flex flex-column">
+      <mat-form-field class="vertical-form-field">
+        <mat-label for="dt_consulta">Data da Consulta</mat-label>
+        <input matInput class="d-none" formControlName="dt_consulta">
+        <div>{{this.form.get('dt_consulta')?.value | date:'dd/MM/yyyy - HH:mm'}}</div>
+      </mat-form-field>
+      <mat-label for="ds_convenio">Tipo de Convênio</mat-label>
+      <mat-radio-group formControlName="ds_convenio" (change)="validateConvenio()">
+        <mat-radio-button *ngFor="let convenio of convenios" [value]="convenio">
+          {{convenio}}
+        </mat-radio-button>
+      </mat-radio-group>
+      <mat-error *ngIf="form.get('ds_tipo_usuario')?.hasError('required')">Obrigatório</mat-error>
+      <mat-form-field class="vertical-form-field">
+        <mat-label for="vl_consulta">Valor da Consulta</mat-label>
+        <input matInput class="d-none" formControlName="vl_consulta">
+        <div>{{this.form.get('vl_consulta')?.value | currency:'BRL'}}</div>
+      </mat-form-field>
+    </div>
+    <div class="d-flex">
+      <button mat-fab extended color="primary" type="submit" class="mx-2">
+        <mat-icon>done</mat-icon>
+        Gerar Consulta
+      </button>
+      <button mat-fab extended color="warn" type="button" (click)="activeModal.close()">
+        <mat-icon>close</mat-icon>
+        Cancelar
+      </button>
+    </div>
+  </form>
+
+</div>

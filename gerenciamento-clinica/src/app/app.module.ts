@@ -38,6 +38,13 @@ import { DoutoresPrincipalComponent } from './pages/doutores/doutores-principal/
 import { ConveniosPrincipalComponent } from './pages/convenios/convenios-principal/convenios-principal.component';
 import { ToastrModule } from 'ngx-toastr';
 import { AgendamentoPrincipalComponent } from './pages/agendamento/agendamento-principal/agendamento-principal.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { AgendamentoModalComponent } from './pages/agendamento/agendamento-modal/agendamento-modal.component';
+import { DateFormatPipe } from './pipes/datePipe';
+import { ConsultaModalComponent } from './pages/consultas/consulta-modal/consulta-modal.component';
+import { ConsultasPrincipalComponent } from './pages/consultas/consultas-principal/consultas-principal.component';
+import { ProntuarioModalComponent } from './pages/consultas/prontuario-modal/prontuario-modal.component';
+
 
 export const options: Partial<null | IConfig> | (() => Partial<IConfig>) = null;
 
@@ -59,7 +66,12 @@ export const options: Partial<null | IConfig> | (() => Partial<IConfig>) = null;
     PacientesPrincipalComponent,
     DoutoresPrincipalComponent,
     ConveniosPrincipalComponent,
-    AgendamentoPrincipalComponent
+    AgendamentoPrincipalComponent,
+    AgendamentoModalComponent,
+    DateFormatPipe,
+    ConsultaModalComponent,
+    ConsultasPrincipalComponent,
+    ProntuarioModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,6 +91,8 @@ export const options: Partial<null | IConfig> | (() => Partial<IConfig>) = null;
     MatNativeDateModule,
     MatRadioModule,
     NgbModalModule,
+    MatExpansionModule,
+
     NgxMaskModule.forRoot(),
     ToastrModule.forRoot(),
   ],

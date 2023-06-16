@@ -42,7 +42,7 @@ class Convenio
         require 'Connection.php';
         $conn = new Connection();
         $conn->connect();
-        $query = "SELECT * FROM tb_convenios where nu_convenio = $value";
+        $query = "SELECT * FROM tb_convenios where nu_convenio = $value and in_especial";
         $result = $conn->query($query);
         if ($result->num_rows > 0) {
             echo json_encode(['success'=>true,'data'=>$result->fetch_assoc()]);

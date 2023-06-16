@@ -4,7 +4,7 @@ import { Prontuario } from './prontuario.model';
 
 export class Paciente {
     id_paciente!: number;
-    no_paciente?: string;
+    no_paciente!: string;
     nu_cpf?: string;
     nu_telefone?: string;
     ds_email?: string;

@@ -19,7 +19,6 @@
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="co_especialidade">Especialidade</mat-label>
         <mat-select formControlName="co_especialidade" [(value)]="selectedEspecialidade">
-          <mat-option value="option1">aaaaaaa</mat-option>
           <mat-option *ngFor="let especialidade of especialidades" [value]="especialidade.co_especialidade">
             {{especialidade.ds_especialidade}}
           </mat-option>
@@ -47,7 +46,7 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="nu_telefone">Telefone</mat-label>
-        <input matInput maxlength="14" type="number" formControlName="nu_telefone">
+        <input matInput maxlength="14" mask="(00)00000-0000" formControlName="nu_telefone">
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="nu_cep">CEP</mat-label>

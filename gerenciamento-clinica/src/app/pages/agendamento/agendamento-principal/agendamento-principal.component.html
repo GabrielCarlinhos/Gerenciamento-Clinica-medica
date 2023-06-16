@@ -1,4 +1,49 @@
 <app-header></app-header>
 <div class="container-fluid p-5">
+  <mat-accordion>
+    <mat-expansion-panel hideToggle *ngFor="let especialidade of agendas">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{especialidade.ds_especialidade}}
+        </mat-panel-title>
 
+      </mat-expansion-panel-header>
+      <mat-expansion-panel *ngFor="let doutor of especialidade.doutores">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{doutor.no_doutor}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <td>Paciente</td>
+              <td>Data da Consulta</td>
+              <td class="text-center text-primary">Reagendar</td>
+              <td class="text-center text-danger">Cancelar</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let agenda of doutor.agendamentos" class="align-middle">
+              <td>{{agenda.paciente.no_paciente}}</td>
+              <td>{{agenda.dt_agendamento | dateFormat}}</td>
+              <td class="text-center text-primary">
+                <mat-icon role="button" (click)="openModalAgendamentoUpdate(agenda)">edit</mat-icon>
+              </td>
+              <td class="text-center text-danger">
+                <mat-icon role="button" (click)="delete(agenda.co_agendamento,doutor.agendamentos)">delete</mat-icon>
+              </td>
+              <td><button mat-button color="primary" (click)="openModalConsulta(agenda,especialidade)">
+                  <mat-icon>done</mat-icon>Gerar Consulta
+                </button></td>
+            </tr>
+          </tbody>
+        </table>
+        <button mat-button color="primary" (click)="openModalAgendamento(doutor.nu_crm)">
+          <mat-icon>calendar_today</mat-icon>
+          Adicionar
+        </button>
+      </mat-expansion-panel>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>

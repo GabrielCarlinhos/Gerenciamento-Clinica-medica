@@ -1,3 +1,6 @@
+import { Doutor } from "../models/doutor.model";
+import { Paciente } from "../models/paciente.model";
+
 export class AgendamentoDto {
   co_especialidade!: number;
   ds_especialidade!: string;
@@ -11,4 +14,6 @@ export class AgendamentoDto {
   id_paciente!: number;
   no_paciente!: string;
   id_convenio!: number;
+  doutores!: Doutor[];
+  paciente!: Paciente;
 }

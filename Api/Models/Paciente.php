@@ -100,8 +100,15 @@ class Paciente
         require 'Connection.php';
         $conn = new Connection();
         $conn->connect();
-        $query = "SELECT $key FROM tb_pacientes where $key = '$value'";
-        echo json_encode(['success' => $conn->query($query)->num_rows <= 0]);
+        $query = "SELECT * FROM tb_pacientes where $key = '$value'";
+        $result = $conn->query($query);
+        if ($result->num_rows > 0) {
+            while ($data = $result->fetch_assoc()) {
+                echo json_encode(['success' => false, 'data' => $data]);
+            }
+        } else {
+            echo json_encode(['success' => true]);
+        }
         $conn->close();
     }
 
@@ -203,6 +210,8 @@ class Paciente
                 $paciente = new Paciente($data);
                 $paciente->acompanhante = Paciente::buildAcompanhante($data);
                 $paciente->convenio = Paciente::buildConvenio($data);
+                $paciente->dt_nascimento = date_format(DateTime::createFromFormat('Y-m-d',$paciente->dt_nascimento),'dmY');
+
                 echo json_encode(['success' => true, 'data' => $paciente]);
             }
         } else {

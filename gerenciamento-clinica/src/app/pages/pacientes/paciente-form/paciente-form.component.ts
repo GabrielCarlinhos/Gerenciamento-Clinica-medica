@@ -14,6 +14,7 @@ import { ConvenioService } from 'src/app/services/convenio.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AcompanhanteFormComponent } from '../acompanhantes/acompanhante-form/acompanhante-form.component';
 import { Acompanhante } from 'src/app/models/acompanhante.model';
+import { timeValidator } from 'src/app/validators/time.validator';
 
 @Component({
   selector: 'app-paciente-form',
@@ -37,8 +38,6 @@ export class PacienteFormComponent implements OnInit {
   set _id_paciente(value: number) {
     this.pacienteService.get(value).pipe(first()).subscribe((response) => {
       this.id_paciente = response.data.id_paciente;
-      response.data.dt_nascimento = new Date(response.data.dt_nascimento!);
-      response.data.dt_nascimento.setDate(response.data.dt_nascimento.getDate() + 1);
       this.form.patchValue(response.data);
       this.form.patchValue(response.data.convenio);
       this.submit = this.update;
@@ -65,7 +64,7 @@ export class PacienteFormComponent implements OnInit {
       'no_paciente': [null, [Validators.required]],
       'nu_cpf': [null, [Validators.required, cpfValidator.isValidCpf()]],
       'nu_rg': [null, [Validators.required, Validators.minLength(5)]],
-      'dt_nascimento': [null, [Validators.required]],
+      'dt_nascimento': [null, [Validators.required, timeValidator.date(), timeValidator.lessThanToday()]],
       'ds_genero': [null, [Validators.required]],
       'nu_telefone': [null, [Validators.required]],
       'nu_cep': [null, [Validators.required]],
@@ -87,9 +86,13 @@ export class PacienteFormComponent implements OnInit {
     })
     this.form.get('dt_nascimento')?.valueChanges.subscribe((value) => {
       let today = new Date();
-      let nascimento = new Date(value);
-      let age = today.getFullYear() - nascimento.getFullYear();
-      const monthDiff = today.getMonth() - nascimento.getMonth();
+      let nascimento: string | Date | null = new Date(
+        parseInt(value.substr(4, 4)),
+        parseInt(value.substr(2, 2)) - 1,
+        parseInt(value.substr(0, 2))
+      );
+      let age = today.getFullYear() - nascimento?.getFullYear();
+      const monthDiff = today.getMonth() - nascimento?.getMonth();
 
       if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < nascimento.getDate())) {
         age--;

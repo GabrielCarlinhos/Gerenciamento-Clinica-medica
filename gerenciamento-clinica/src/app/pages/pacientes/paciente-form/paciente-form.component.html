@@ -27,10 +27,11 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="dt_nascimento">Data de Nascimento</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="dt_nascimento">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker startView="multi-year" [startAt]="startDate"></mat-datepicker>
+        <input matInput mask="00/00/0000" formControlName="dt_nascimento">
         <mat-error *ngIf="form.get('dt_nascimento')?.hasError('required')">{{genericRequired}}</mat-error>
+        <mat-error *ngIf="form.get('dt_nascimento')?.hasError('invalidDate')">Data Inválida</mat-error>
+        <mat-error *ngIf="form.get('dt_nascimento')?.hasError('futureDate')">Data de Nascimento não pode ser no futuro
+        </mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="ds_genero">Gênero</mat-label>
@@ -42,7 +43,7 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">
         <mat-label for="nu_telefone">Telefone</mat-label>
-        <input matInput formControlName="nu_telefone" type="number">
+        <input matInput formControlName="nu_telefone" type="text" mask="(00)00000-0000">
         <mat-error *ngIf="form.get('nu_telefone')?.hasError('required')">{{genericRequired}}</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-sm-6 col-md-4">

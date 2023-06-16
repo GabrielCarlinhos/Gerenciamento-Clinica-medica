@@ -1,0 +1,47 @@
+<div class="container-fluid p-5">
+  <h2>Prontuário do paciente - {{no_paciente}}</h2>
+  <form [formGroup]="form" (submit)="submit()">
+    <div class="row">
+      <mat-form-field class="col-md-4">
+        <mat-label for="nu_peso">Peso</mat-label>
+        <input matInput formControlName="nu_peso" type="number" placeholder="kg" (change)="calculateBmi()">
+      </mat-form-field>
+      <mat-form-field class="col-md-4">
+        <mat-label for="nu_altura">Altura</mat-label>
+        <input matInput formControlName="nu_altura" type="number" placeholder="Altura em cm" (change)="calculateBmi()">
+      </mat-form-field>
+      <mat-form-field class="col-md-4">
+        <mat-label for="nu_imc">IMC</mat-label>
+        <input readonly="readonly" matInput formControlName="nu_imc" type="number">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="ds_exame_fisico">Exame Físico</mat-label>
+        <textarea matInput rows="4" formControlName="ds_exame_fisico"></textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="ds_solicitacao_exame">Solicitação de Exame</mat-label>
+        <textarea matInput rows="4" formControlName="ds_solicitacao_exame"></textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="ds_alergias">Alergias</mat-label>
+        <textarea matInput rows="2" formControlName="ds_alergias"></textarea>
+      </mat-form-field>
+      <div class="d-flex flex-column">
+        <mat-label for="tp_sanguineo">Tipo Sanguíneo</mat-label>
+        <mat-radio-group formControlName="tp_sanguineo">
+          <mat-radio-button class="mx-3" *ngFor="let type of bloodTypes" [value]="type">
+            {{type}}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button mat-fab extended color="primary" class="mx-2" type="submit">
+        <mat-icon>save</mat-icon>Salvar
+      </button>
+      <button mat-fab extended color="warn" type="button" (click)="activeModal.close()">
+        <mat-icon>close</mat-icon>Cancelar
+      </button>
+    </div>
+  </form>
+</div>

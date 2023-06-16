@@ -20,6 +20,7 @@ class Doutor
     public $id_usuario;
     public $usuario;
     public $especialidade;
+    public $agendamentos;
 
     public function __construct($data = [])
     {
@@ -38,6 +39,7 @@ class Doutor
         $this->id_usuario = $data['id_usuario'] ?? null;
         $this->usuario = $data['usuario'] ?? null;
         $this->especialidade = $data['especialidade'] ?? null;
+        $this->agendamentos = $data['agendamentos'] ?? null;
     }
 
     public function create()

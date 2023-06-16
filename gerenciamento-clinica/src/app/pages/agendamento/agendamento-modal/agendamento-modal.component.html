@@ -1,0 +1,46 @@
+<div class="container-fluid p-3">
+  <h2><span *ngIf="!reagendar">Agendar </span><span *ngIf="reagendar">Reagendar </span><span>Consulta</span><span
+      *ngIf="reagendar"> com {{no_paciente}}</span></h2>
+  <form [formGroup]="form" (submit)="submit()">
+    <div class="d-flex flex-column">
+      <mat-form-field *ngIf="!reagendar" class="vertical-form-field">
+        <mat-label for="nu_cpf">Cpf do Paciente</mat-label>
+        <input matInput formControlName="nu_cpf" mask="000.000.000-00" formControlName="nu_cpf"
+          (change)="checkCpfPaciente()">
+        <mat-error *ngIf="form.get('nu_cpf')?.hasError('required')">{{genericRequired}}</mat-error>
+        <mat-error *ngIf="form.get('nu_cpf')?.hasError('mask') || form.get('nu_cpf')?.hasError('cpfInvalid')">Cpf
+          Inválido</mat-error>
+        <mat-error *ngIf="form.get('nu_cpf')?.hasError('cpfNotFound')">Cpf não encontrado</mat-error>
+      </mat-form-field>
+      <mat-form-field class="vertical-form-field">
+        <mat-label for="dt_agendamento">Data da Consulta</mat-label>
+        <input matInput formControlName="dt_agendamento" mask="00/00/0000" placeholder="DD/MM/YYYY">
+        <mat-error *ngIf="form.get('dt_agendamento')?.hasError('required')">{{ genericRequired }}</mat-error>
+        <mat-error *ngIf="form.get('dt_agendamento')?.hasError('inverted')">Data não pode ser no passado</mat-error>
+        <mat-error
+          *ngIf="form.get('dt_agendamento')?.hasError('mask') || form.get('dt_agendamento')?.hasError('invalidDate')">
+          Data Inválida</mat-error>
+      </mat-form-field>
+      <mat-form-field class="vertical-form-field">
+        <mat-label for="hr_agendamento">Horário</mat-label>
+        <input matInput formControlName="hr_agendamento" mask="00:00" formControlName="hr_agendamento"
+          placeholder="HH:MM">
+        <mat-error *ngIf="form.get('hr_agendamento')?.hasError('required')">{{ genericRequired }}</mat-error>
+        <mat-error
+          *ngIf="form.get('hr_agendamento')?.hasError('invalidTime') || form.get('hr_agendamento')?.hasError('mask')">
+          Horário Inválido</mat-error>
+      </mat-form-field>
+
+      <div class="d-flex mt-3">
+        <button mat-fab extended color="primary" class="mx-2" type="submit" [disabled]="form.invalid">
+          <mat-icon>add</mat-icon>
+          <span *ngIf="!reagendar">Agendar</span><span *ngIf="reagendar">Reagendar</span>
+        </button>
+        <button mat-fab extended color="warn" type="button" (click)="activeModal.close()">
+          <mat-icon>close</mat-icon>
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

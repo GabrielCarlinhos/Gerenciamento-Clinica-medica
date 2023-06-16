@@ -1,0 +1,27 @@
+<app-header></app-header>
+<div class="container-fluid p-5">
+  <h2>Consultas</h2>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <td>Paciente</td>
+          <td>Data da Consulta</td>
+          <td>Valor</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let consulta of consultas">
+          <td>{{consulta.paciente?.no_paciente}}</td>
+          <td>{{consulta.dt_consulta | date:'dd/MM/yyyy'}}</td>
+          <td>{{consulta.vl_consulta | currency: 'BRL'}}</td>
+          <td><button mat-button color="primary" (click)="openModalProntuario(consulta.co_consulta,consulta.paciente?.no_paciente)">
+              <mat-icon>add</mat-icon>
+              Prontuário
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,6 +1,4 @@
 
-select * from tb_estados;
-
 create database if not exists clinica;
 use clinica;
 
@@ -21,7 +19,7 @@ create table if not exists tb_especialidades(
 co_especialidade int not null auto_increment,
 ds_especialidade varchar(100) not null,
 vl_consulta dec(10,2) not null,
-constraint pk_especialidade primary key (co_especialidade)
+constraint primary key (co_especialidade)
 );
 
 
@@ -40,17 +38,18 @@ ds_cidade varchar(45) not null,
 co_estado varchar(45) not null,
 co_especialidade int not null,
 id_usuario int,
-constraint pk_doutor primary key (nu_crm),
+constraint primary key (nu_crm),
 
-constraint fk_id_usuario foreign key (id_usuario) references tb_usuarios (id_usuario),
-constraint fk_cd_especialidade foreign key (co_especialidade) references tb_especialidades (co_especialidade)
+constraint foreign key (id_usuario) references tb_usuarios (id_usuario),
+constraint foreign key (co_especialidade) references tb_especialidades (co_especialidade)
 );
 
 create table if not exists tb_convenios(
 id_convenio int not null auto_increment,
 no_convenio varchar(45) not null,
 nu_convenio int not null,
-constraint pk_convenio primary key(id_convenio)
+in_especial boolean DEFAULT FALSE,
+constraint primary key(id_convenio)
 );
 
 create table if not exists tb_pacientes(
@@ -71,37 +70,11 @@ in_ativo boolean,
 no_mae varchar(45) not null,
 nu_rg varchar(9) not null,
 id_convenio int,
-constraint pk_paciente primary key (id_paciente),
-constraint fk_id_convenio foreign key(id_convenio) references tb_convenios(id_convenio)
+constraint primary key (id_paciente),
+constraint foreign key(id_convenio) references tb_convenios(id_convenio)
 );
 
-CREATE VIEW view_paciente AS
-SELECT p.*, c.no_convenio,c.nu_convenio,a.id_acompanhante, a.no_acompanhante, a.nu_cpf AS cpf_acompanhante, a.nu_telefone AS telefone_acompanhante, a.ds_email AS email_acompanhante
-FROM tb_pacientes AS p
-LEFT JOIN tb_convenios AS c ON p.id_convenio = c.id_convenio
-LEFT JOIN tb_acompanhantes AS a ON a.id_paciente = p.id_paciente;
 
-
-CREATE VIEW view_agenda AS SELECT
-  e.*,
-  d.no_doutor,
-  a.co_agendamento,
-  a.dt_agendamento,
-  a.id_paciente as agendamento_id_paciente,
-  a.in_cancelado,
-  a.ds_motivo_cancelamento,
-  p.id_paciente,
-  p.no_paciente,
-  p.id_convenio
-FROM
-  tb_especialidades e
-LEFT JOIN
-  tb_doutores d ON e.co_especialidade = d.co_especialidade
-LEFT JOIN
-  tb_agendamentos a ON a.nu_crm_doutor = d.nu_crm
-LEFT JOIN
-  tb_pacientes p ON a.id_paciente = p.id_paciente
-;
 
 create table if not exists tb_acompanhantes(
 id_acompanhante int not null auto_increment,
@@ -111,34 +84,34 @@ nu_rg varchar(10)not null,
 nu_telefone varchar(15) not null,
 id_paciente int not null,
 ds_email varchar(100),
-constraint pk_acompanhante primary key (id_acompanhante),
-constraint fk_id_paciente foreign key(id_paciente) references tb_pacientes (id_paciente)
+constraint primary key (id_acompanhante),
+constraint foreign key(id_paciente) references tb_pacientes (id_paciente)
 );
 
 create table if not exists tb_agendamentos(
 co_agendamento int not null auto_increment,
-dt_agendamento DateTime not null,
+dt_agendamento Date not null,
+hr_agendamento time not null,
 id_paciente int not null,
 nu_crm_doutor int not null,
 in_cancelado boolean,
 ds_motivo_cancelamento varchar(100),
-constraint pk_agendamento primary key (co_agendamento),
-constraint fk_id_paciente_agendamento foreign key(id_paciente) references tb_pacientes (id_paciente),
-constraint fk_crm_doutor foreign key(nu_crm_doutor) references tb_doutores (nu_crm)
+constraint primary key (co_agendamento),
+constraint foreign key(id_paciente) references tb_pacientes (id_paciente),
+constraint foreign key(nu_crm_doutor) references tb_doutores (nu_crm)
 );
 
 create table if not exists tb_consultas(
 co_consulta int not null auto_increment,
 dt_consulta dateTime not null,
 vl_consulta float not null,
-ds_convenio enum("social", "particular") not null,
+ds_convenio enum("social", "particular", "convênio") not null,
 id_paciente int not null,
 nu_crm_doutor int not null,
-constraint pk_consulta primary key (co_consulta),
-constraint fk_id_paciente_consulta foreign key(id_paciente) references tb_pacientes (id_paciente),
-constraint fk_crm_doutor_consulta foreign key(nu_crm_doutor) references tb_doutores (nu_crm)
+constraint primary key (co_consulta),
+constraint foreign key(id_paciente) references tb_pacientes (id_paciente),
+constraint foreign key(nu_crm_doutor) references tb_doutores (nu_crm)
 );
-
 
 
 create table if not exists tb_prontuarios(
@@ -152,9 +125,9 @@ tp_sanguineo enum('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
 ds_alergias mediumtext,
 id_paciente int not null,
 nu_crm_doutor int not null,
-constraint pk_prontuario primary key (id_prontuario),
-constraint fk_id_paciente_prontuario foreign key(id_paciente) references tb_pacientes (id_paciente),
-constraint fk_crm_doutor_prontuario foreign key(nu_crm_doutor) references tb_doutores (nu_crm)
+constraint primary key (id_prontuario),
+constraint foreign key(id_paciente) references tb_pacientes (id_paciente),
+constraint foreign key(nu_crm_doutor) references tb_doutores (nu_crm)
 );
 
 create table if not exists tb_estados (
@@ -165,7 +138,7 @@ create table if not exists tb_estados (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-INSERT INTO `estados` (`id_estado`, `no_estado`, `co_estado`) VALUES
+INSERT INTO tb_estados (`id_estado`, `no_estado`, `co_estado`) VALUES
 (1, 'Acre', 'AC'),
 (2, 'Alagoas', 'AL'),
 (3, 'Amazonas', 'AM'),
@@ -194,50 +167,34 @@ INSERT INTO `estados` (`id_estado`, `no_estado`, `co_estado`) VALUES
 (26, 'São Paulo', 'SP'),
 (27, 'Tocantins', 'TO');
 
-SELECT * FROM estados;
-
-INSERT INTO tb_consultas (dt_consulta, vl_consulta, ds_convenio, id_paciente, nu_crm_doutor)
-VALUES ('2022-01-09 20:40:00', 250, 'social', 1, 131313);
-
-INSERT INTO tb_consultas (dt_consulta, vl_consulta, ds_convenio, id_paciente, nu_crm_doutor)
-VALUES ('2022-01-09 20:40:00', 250, 'particular', 1, 131313);
-
-INSERT INTO tb_consultas (dt_consulta, vl_consulta, ds_convenio, id_paciente, nu_crm_doutor)
-VALUES ('2022-02-09 20:40:00', 250, 'social', 1, 131313);
-
-INSERT INTO tb_consultas (dt_consulta, vl_consulta, ds_convenio, id_paciente, nu_crm_doutor)
-VALUES ('2022-02-09 20:40:00', 250, 'social', 1, 131313);
-
-INSERT INTO tb_consultas (dt_consulta, vl_consulta, ds_convenio, id_paciente, nu_crm_doutor)
-VALUES ('2022-03-09 20:40:00', 250, 'particular', 1, 131313);
-
-INSERT INTO tb_consultas (dt_consulta, vl_consulta, ds_convenio, id_paciente, nu_crm_doutor)
-VALUES ('2022-03-09 20:40:00', 250, 'particular', 1, 131313);
-
-INSERT INTO tb_consultas (dt_consulta, vl_consulta, ds_convenio, id_paciente, nu_crm_doutor)
-VALUES ('2022-04-09 20:40:00', 250, 'social', 1, 131313);
-
-INSERT INTO tb_consultas (dt_consulta, vl_consulta, ds_convenio, id_paciente, nu_crm_doutor)
-VALUES ('2022-04-09 20:40:00', 250, 'particular', 1, 131313);
-
-INSERT INTO tb_consultas (dt_consulta, vl_consulta, ds_convenio, id_paciente, nu_crm_doutor)
-VALUES ('2022-05-09 20:40:00', 250, 'social', 1, 131313);
-
-INSERT INTO tb_consultas (dt_consulta, vl_consulta, ds_convenio, id_paciente, nu_crm_doutor)
-VALUES ('2022-05-09 20:40:00', 250, 'social', 1, 131313);
+CREATE VIEW view_paciente AS
+SELECT p.*, c.no_convenio,c.nu_convenio,a.id_acompanhante, a.no_acompanhante, a.nu_cpf AS cpf_acompanhante, a.nu_telefone AS telefone_acompanhante, a.ds_email AS email_acompanhante
+FROM tb_pacientes AS p
+LEFT JOIN tb_convenios AS c ON p.id_convenio = c.id_convenio
+LEFT JOIN tb_acompanhantes AS a ON a.id_paciente = p.id_paciente;
 
 
-select * from tb_convenios;
-select * from tb_prontuarios;
-select * from tb_pacientes;
-select * from tb_usuarios;
-select * from tb_consultas;
-select * from tb_doutores;
-select * from tb_agendamentos;
-select * from tb_acompanhantes;
-select * from tb_especialidades;	
-
-
-
-
-
+CREATE VIEW view_agenda AS SELECT
+  e.*,
+  d.no_doutor,
+  d.nu_crm,
+  a.co_agendamento,
+  a.dt_agendamento,
+  a.id_paciente as agendamento_id_paciente,
+  a.nu_crm_doutor,
+  a.hr_agendamento,
+  a.in_cancelado,
+  a.ds_motivo_cancelamento,
+  p.id_paciente,
+  p.nu_cpf,
+  p.no_paciente,
+  p.id_convenio
+FROM
+  tb_especialidades e
+LEFT JOIN
+  tb_doutores d ON e.co_especialidade = d.co_especialidade
+LEFT JOIN
+  tb_agendamentos a ON a.nu_crm_doutor = d.nu_crm
+LEFT JOIN
+  tb_pacientes p ON a.id_paciente = p.id_paciente
+;
